@@ -8,10 +8,10 @@ let server: Server;
 
 connect().then(() => {
   server = createServer(app).listen(Number(PORT), ADDRESS, () => {
-    logger.info(`=================================`);
+    logger.info('=================================');
     logger.info(`======= ENV: ${NODE_ENV} =======`);
     logger.info(`🚀 App listening on the port ${PORT}`);
-    logger.info(`=================================`);
+    logger.info('=================================');
   });
 });
 

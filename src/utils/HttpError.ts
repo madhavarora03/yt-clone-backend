@@ -1,6 +1,6 @@
 class HttpError extends Error {
   public statusCode: number;
-  public errors: any[];
+  public errors: object[];
   public success: boolean;
   public isOperational: boolean;
 
