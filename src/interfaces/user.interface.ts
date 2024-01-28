@@ -1,7 +1,7 @@
-import { Document, Model } from 'mongoose';
+import { Document, Model, Schema } from 'mongoose';
 
-interface WatchHistory {
-  videoId: string;
+export interface WatchHistory {
+  video: Schema.Types.ObjectId;
   watchedAt: Date;
 }
 

@@ -1,7 +1,12 @@
 import { Schema, model } from 'mongoose';
-import { UserDocument, UserModel, UserMethods } from '@/interfaces';
+import {
+  UserDocument,
+  UserModel,
+  UserMethods,
+  WatchHistory,
+} from '@/interfaces';
 
-const watchHistorySchema = new Schema(
+const watchHistorySchema = new Schema<WatchHistory>(
   {
     video: {
       type: Schema.Types.ObjectId,
