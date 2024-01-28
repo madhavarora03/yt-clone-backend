@@ -16,6 +16,13 @@ const schema = object({
   REFRESH_TOKEN_EXPIRY: string().default('10d'),
   MONGODB_URI: string({ required_error: 'MONGODB_URI is required' }).min(1),
   CORS_ORIGIN: string({ required_error: 'CORS_ORIGIN is required' }).min(1),
+  AWS_ACCESS_KEY_ID: string({
+    required_error: 'AWS_ACCESS_KEY_ID is required',
+  }).min(1),
+  AWS_SECRET_ACCESS_KEY: string({
+    required_error: 'AWS_SECRET_ACCESS_KEY is required',
+  }).min(1),
+  AWS_REGION: string({ required_error: 'AWS_REGION is required' }).min(1),
 });
 
 const env = schema.parse(process.env);
@@ -30,4 +37,7 @@ export const {
   REFRESH_TOKEN_EXPIRY,
   MONGODB_URI,
   CORS_ORIGIN,
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_REGION,
 } = env;
