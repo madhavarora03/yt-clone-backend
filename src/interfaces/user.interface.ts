@@ -22,6 +22,10 @@ export interface User {
 
 export interface UserDocument extends User, Document {}
 
-export interface UserMethods {}
+export interface UserMethods {
+  matchPassword: (password: string) => Promise<boolean>;
+  generateAccessToken: () => string;
+  generateRefreshToken: () => string;
+}
 
 export interface UserModel extends Model<User, UserDocument, UserMethods> {}
