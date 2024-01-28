@@ -19,4 +19,8 @@ app.use(
 // cookie parser
 app.use(cookieParser());
 
+// router
+import router from './routes';
+app.use('/api/v1', router);
+
 export default app;
