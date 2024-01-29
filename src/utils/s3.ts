@@ -34,7 +34,7 @@ export async function putObjectUrl(
 ) {
   const putObjCommand = new PutObjectCommand({
     Bucket: AWS_S3_BUCKET_NAME,
-    Key: `uploads/${username}/${contentType.includes('video') ? 'video/' + filename : 'profile/' + filename}`,
+    Key: `uploads/${username}/${contentType.includes('video') ? 'video/' : 'profile/'}${filename}`, // TODO: think about thumbnail
     ContentType: contentType,
   });
 
