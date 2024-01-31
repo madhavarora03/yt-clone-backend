@@ -29,12 +29,13 @@ export async function getObjectUrl(Key: string) {
 
 export async function putObjectUrl(
   username: string,
+  location: 'videos' | 'profile',
   filename: string,
   contentType: string,
 ) {
   const putObjCommand = new PutObjectCommand({
     Bucket: AWS_S3_BUCKET_NAME,
-    Key: `uploads/${username}/${contentType.includes('video') ? 'video/' : 'profile/'}${filename}`, // TODO: think about thumbnail
+    Key: `uploads/${username}/${location}/${filename}`,
     ContentType: contentType,
   });
 
