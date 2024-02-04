@@ -1,4 +1,5 @@
 import { REFRESH_TOKEN_SECRET } from '@/config';
+import { AuthenticationRequest } from '@/interfaces';
 import { cookieOptions } from '@/constants';
 import { User } from '@/models';
 import HttpError from '@/utils/HttpError';
@@ -180,5 +181,26 @@ export const refreshAccessToken = catchAsync(
     } catch (error) {
       throw new HttpError(401, 'Invalid refresh token');
     }
+  },
+);
+
+export const logoutUser = catchAsync(
+  async (req: AuthenticationRequest, res: Response) => {
+    await User.findByIdAndUpdate(
+      req.user?._id,
+      {
+        $set: { refreshToken: undefined },
+      },
+      { new: true },
+    );
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    };
+    return res
+      .status(200)
+      .clearCookie('accessToken', options)
+      .clearCookie('refreshToken', options)
+      .json(new HttpResponse(200, {}, 'User logged out successfully!'));
   },
 );

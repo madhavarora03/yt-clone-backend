@@ -1,3 +1,5 @@
+import { AuthenticationRequest } from './auth.interface';
+
 import {
   User,
   UserDocument,
@@ -13,5 +15,6 @@ import {
   VideoModel,
 } from './video.interface';
 
+export { AuthenticationRequest };
 export { User, UserDocument, UserMethods, UserModel, WatchHistory };
 export { Video, VideoDocument, VideoMethods, VideoModel };
