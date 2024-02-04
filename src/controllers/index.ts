@@ -4,6 +4,7 @@ import {
   registerUser,
   loginUser,
   refreshAccessToken,
+  logoutUser,
 } from './user.controller';
 
 export {
@@ -12,4 +13,5 @@ export {
   registerUser,
   loginUser,
   refreshAccessToken,
+  logoutUser,
 };

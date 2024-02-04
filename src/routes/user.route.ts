@@ -4,8 +4,10 @@ import {
   validateUsername,
   validateEmail,
   loginUser,
-  refreshAccessToken
+  refreshAccessToken,
+  logoutUser,
 } from '@/controllers';
+import { verifyJwt } from '@/middlewares/auth.middleware';
 
 const router = Router();
 
@@ -16,5 +18,6 @@ router.route('/login').post(loginUser);
 router.route('/refresh-token').post(refreshAccessToken);
 
 // protected routes
+router.route('/logout').post(verifyJwt, logoutUser);
 
 export default router;
