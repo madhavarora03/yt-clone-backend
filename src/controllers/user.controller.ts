@@ -1,9 +1,11 @@
+import { REFRESH_TOKEN_SECRET } from '@/config';
 import { cookieOptions } from '@/constants';
 import { User } from '@/models';
 import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import { Request, Response } from 'express';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 export const validateUsername = catchAsync(
@@ -136,3 +138,47 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
       ),
     );
 });
+
+export const refreshAccessToken = catchAsync(
+  async (req: Request, res: Response) => {
+    const incomingRefreshToken =
+      req.cookies.refreshToken || req.body.refreshToken;
+
+    if (!incomingRefreshToken) {
+      throw new HttpError(401, 'Unauthorized request');
+    }
+
+    try {
+      const decodedToken: JwtPayload = jwt.verify(
+        incomingRefreshToken,
+        REFRESH_TOKEN_SECRET,
+      ) as JwtPayload;
+
+      const user = await User.findById(decodedToken?._id);
+
+      if (!user) {
+        throw new HttpError(401, 'Invalid refresh token');
+      }
+
+      if (user.refreshToken !== incomingRefreshToken) {
+        throw new HttpError(401, 'Refresh token is expired or used');
+      }
+
+      const { accessToken, refreshToken: newRefreshToken } =
+        await generateAccessAndRefreshTokens(user._id);
+      return res
+        .status(200)
+        .cookie('accessToken', accessToken, cookieOptions)
+        .cookie('refreshToken', newRefreshToken, cookieOptions)
+        .json(
+          new HttpResponse(
+            200,
+            { accessToken, refreshToken: newRefreshToken },
+            'Access token refreshed!',
+          ),
+        );
+    } catch (error) {
+      throw new HttpError(401, 'Invalid refresh token');
+    }
+  },
+);
