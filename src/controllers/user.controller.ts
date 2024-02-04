@@ -1,8 +1,10 @@
+import { cookieOptions } from '@/constants';
 import { User } from '@/models';
 import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 
 export const validateUsername = catchAsync(
   async (req: Request, res: Response) => {
@@ -33,7 +35,7 @@ export const validateEmail = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const generateAccessAndRefreshTokens = async (
-  userId: string,
+  userId: mongoose.Types.ObjectId,
 ): Promise<{ accessToken: string; refreshToken: string }> => {
   try {
     const user = await User.findById(userId);
@@ -53,7 +55,6 @@ export const generateAccessAndRefreshTokens = async (
     throw new HttpError(500, 'Something went wrong while generating tokens');
   }
 };
-
 
 export const registerUser = catchAsync(async (req: Request, res: Response) => {
   const { username, email, fullName, bio, password } = req.body;
@@ -93,5 +94,45 @@ export const registerUser = catchAsync(async (req: Request, res: Response) => {
     .status(201)
     .json(
       new HttpResponse(201, { user: createdUser }, 'User created successfully'),
+    );
+});
+
+export const loginUser = catchAsync(async (req: Request, res: Response) => {
+  const { username, email, password } = req.body;
+
+  if (!username && !email) {
+    throw new HttpError(400, 'Username or Email is required');
+  }
+
+  const user = await User.findOne({ $or: [{ username }, { email }] });
+
+  if (!user) {
+    throw new HttpError(404, 'User not found');
+  }
+
+  const isPasswordCorrect = await user.matchPassword(password);
+
+  if (!isPasswordCorrect) {
+    throw new HttpError(401, 'Invalid user credentials');
+  }
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    user._id,
+  );
+
+  const loggedInUser = await User.findById(user._id).select(
+    '-password -refreshToken',
+  );
+
+  res
+    .status(200)
+    .cookie('refreshToken', refreshToken, cookieOptions)
+    .cookie('accessToken', accessToken, cookieOptions)
+    .json(
+      new HttpResponse(
+        200,
+        { user: loggedInUser },
+        'User logged in successfully',
+      ),
     );
 });

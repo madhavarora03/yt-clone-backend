@@ -2,6 +2,7 @@ import {
   validateUsername,
   validateEmail,
   registerUser,
+  loginUser,
 } from './user.controller';
 
-export { validateUsername, validateEmail, registerUser };
+export { validateUsername, validateEmail, registerUser, loginUser };
