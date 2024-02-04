@@ -22,7 +22,7 @@ export async function getObjectUrl(Key: string) {
   });
 
   const url = await getSignedUrl(s3Client, getObjCommand, {
-    expiresIn: Infinity,
+    expiresIn: 7 * 24 * 60 * 60,
   });
   return url;
 }

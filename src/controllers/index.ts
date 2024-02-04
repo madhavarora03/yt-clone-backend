@@ -1,3 +1,3 @@
-import { registerUser } from './user.controller';
+import { validateUsername, registerUser } from './user.controller';
 
-export { registerUser };
+export { validateUsername, registerUser };

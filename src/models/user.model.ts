@@ -54,11 +54,9 @@ const userSchema = new Schema<UserDocument, UserModel, UserMethods>(
     },
     avatar: {
       type: String, // S3 URL
-      required: true,
     },
     coverImage: {
       type: String, // S3 URL
-      default: '',
     },
     bio: {
       type: String,
