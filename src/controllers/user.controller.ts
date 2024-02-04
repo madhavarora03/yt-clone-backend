@@ -32,6 +32,29 @@ export const validateEmail = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json(new HttpResponse(200, { email }, 'Email is available'));
 });
 
+export const generateAccessAndRefreshTokens = async (
+  userId: string,
+): Promise<{ accessToken: string; refreshToken: string }> => {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new HttpError(404, 'User not found');
+    }
+
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    return { accessToken, refreshToken };
+  } catch (error) {
+    throw new HttpError(500, 'Something went wrong while generating tokens');
+  }
+};
+
+
 export const registerUser = catchAsync(async (req: Request, res: Response) => {
   const { username, email, fullName, bio, password } = req.body;
   if (
