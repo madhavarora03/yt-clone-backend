@@ -1,5 +1,5 @@
-import { object, string } from 'zod';
 import { config } from 'dotenv';
+import { object, string } from 'zod';
 config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
 
 const schema = object({

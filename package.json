@@ -7,7 +7,7 @@
     "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "prettify": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" --quiet --fix"
   },
   "author": "Madhav Arora",
@@ -24,6 +24,7 @@
     "eslint-config-prettier": "^9.1.0",
     "nodemon": "^3.0.3",
     "prettier": "^3.2.4",
+    "prettier-plugin-organize-imports": "^3.2.4",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"

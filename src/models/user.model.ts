@@ -1,18 +1,18 @@
-import { Schema, model } from 'mongoose';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import {
+  ACCESS_TOKEN_EXPIRY,
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRY,
+  REFRESH_TOKEN_SECRET,
+} from '@/config';
 import {
   UserDocument,
-  UserModel,
   UserMethods,
+  UserModel,
   WatchHistory,
 } from '@/interfaces';
-import {
-  ACCESS_TOKEN_SECRET,
-  ACCESS_TOKEN_EXPIRY,
-  REFRESH_TOKEN_SECRET,
-  REFRESH_TOKEN_EXPIRY,
-} from '@/config';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { Schema, model } from 'mongoose';
 
 const watchHistorySchema = new Schema<WatchHistory>(
   {

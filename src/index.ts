@@ -1,8 +1,8 @@
-import app from './app';
 import { ADDRESS, NODE_ENV, PORT } from 'config';
 import connect from 'db';
-import logger from 'utils/logger';
 import { Server, createServer } from 'http';
+import logger from 'utils/logger';
+import app from './app';
 
 let server: Server;
 

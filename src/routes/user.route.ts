@@ -1,13 +1,15 @@
-import { Router } from 'express';
 import {
-  registerUser,
-  validateUsername,
-  validateEmail,
+  getCurrentUser,
   loginUser,
-  refreshAccessToken,
   logoutUser,
+  refreshAccessToken,
+  registerUser,
+  updateAccountDetails,
+  validateEmail,
+  validateUsername,
 } from '@/controllers';
 import { verifyJwt } from '@/middlewares';
+import { Router } from 'express';
 
 const router = Router();
 
@@ -19,5 +21,7 @@ router.route('/refresh-token').post(refreshAccessToken);
 
 // protected routes
 router.route('/logout').post(verifyJwt, logoutUser);
+router.route('/me').get(verifyJwt, getCurrentUser);
+router.route('/update-details').patch(verifyJwt, updateAccountDetails);
 
 export default router;

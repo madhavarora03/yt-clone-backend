@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import logger from '@/utils/logger';
-import HttpError from '@/utils/HttpError';
-import { NODE_ENV, MONGODB_URI } from '@/config';
+import { MONGODB_URI, NODE_ENV } from '@/config';
 import { DB_NAME } from '@/constants';
+import HttpError from '@/utils/HttpError';
+import logger from '@/utils/logger';
+import mongoose from 'mongoose';
 
 async function connect() {
   if (MONGODB_URI) {

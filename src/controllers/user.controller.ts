@@ -1,13 +1,13 @@
 import { REFRESH_TOKEN_SECRET } from '@/config';
-import { AuthenticationRequest } from '@/interfaces';
 import { cookieOptions } from '@/constants';
+import { AuthenticatedRequest } from '@/interfaces';
 import { User } from '@/models';
 import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
+import { generateAccessAndRefreshTokens } from '@/utils/generateTokens';
 import { Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import mongoose from 'mongoose';
 
 export const validateUsername = catchAsync(
   async (req: Request, res: Response) => {
@@ -19,7 +19,7 @@ export const validateUsername = catchAsync(
     if (existingUser) {
       throw new HttpError(409, 'Username already exists');
     }
-    res
+    return res
       .status(200)
       .json(new HttpResponse(200, { username }, 'Username is available'));
   },
@@ -34,30 +34,10 @@ export const validateEmail = catchAsync(async (req: Request, res: Response) => {
   if (existingUser) {
     throw new HttpError(409, 'Email already exists');
   }
-  res.status(200).json(new HttpResponse(200, { email }, 'Email is available'));
+  return res
+    .status(200)
+    .json(new HttpResponse(200, { email }, 'Email is available'));
 });
-
-export const generateAccessAndRefreshTokens = async (
-  userId: mongoose.Types.ObjectId,
-): Promise<{ accessToken: string; refreshToken: string }> => {
-  try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      throw new HttpError(404, 'User not found');
-    }
-
-    const accessToken = user.generateAccessToken();
-    const refreshToken = user.generateRefreshToken();
-
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
-
-    return { accessToken, refreshToken };
-  } catch (error) {
-    throw new HttpError(500, 'Something went wrong while generating tokens');
-  }
-};
 
 export const registerUser = catchAsync(async (req: Request, res: Response) => {
   const { username, email, fullName, bio, password } = req.body;
@@ -93,10 +73,20 @@ export const registerUser = catchAsync(async (req: Request, res: Response) => {
     throw new HttpError(500, 'Something went wrong while registering the user');
   }
 
-  res
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    createdUser._id,
+  );
+
+  return res
     .status(201)
+    .cookie('accessToken', accessToken, cookieOptions)
+    .cookie('refreshToken', refreshToken, cookieOptions)
     .json(
-      new HttpResponse(201, { user: createdUser }, 'User created successfully'),
+      new HttpResponse(
+        201,
+        { user: createdUser, accessToken, refreshToken },
+        'User created and logged in successfully',
+      ),
     );
 });
 
@@ -127,7 +117,7 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
     '-password -refreshToken',
   );
 
-  res
+  return res
     .status(200)
     .cookie('refreshToken', refreshToken, cookieOptions)
     .cookie('accessToken', accessToken, cookieOptions)
@@ -185,7 +175,7 @@ export const refreshAccessToken = catchAsync(
 );
 
 export const logoutUser = catchAsync(
-  async (req: AuthenticationRequest, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     await User.findByIdAndUpdate(
       req.user?._id,
       {
@@ -193,14 +183,50 @@ export const logoutUser = catchAsync(
       },
       { new: true },
     );
-    const options = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    };
+
     return res
       .status(200)
-      .clearCookie('accessToken', options)
-      .clearCookie('refreshToken', options)
+      .clearCookie('accessToken', cookieOptions)
+      .clearCookie('refreshToken', cookieOptions)
       .json(new HttpResponse(200, {}, 'User logged out successfully!'));
+  },
+);
+
+export const getCurrentUser = catchAsync(
+  async (req: AuthenticatedRequest, res) => {
+    return res
+      .status(200)
+      .json(
+        new HttpResponse(200, { user: req.user }, 'User fetched successfully!'),
+      );
+  },
+);
+
+export const updateAccountDetails = catchAsync(
+  async (req: AuthenticatedRequest, res) => {
+    const { email, fullName, bio } = req.body;
+
+    if (!email || !fullName || !bio) {
+      throw new HttpError(400, 'All fields are required');
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user?._id,
+      {
+        email,
+        fullName,
+        bio,
+      },
+      { new: true },
+    ).select('-password -refreshToken');
+    return res
+      .status(200)
+      .json(
+        new HttpResponse(
+          200,
+          { user },
+          'Account details updated successfully!',
+        ),
+      );
   },
 );

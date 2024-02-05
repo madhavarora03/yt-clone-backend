@@ -1,17 +1,21 @@
 import {
-  validateUsername,
-  validateEmail,
-  registerUser,
+  getCurrentUser,
   loginUser,
-  refreshAccessToken,
   logoutUser,
+  refreshAccessToken,
+  registerUser,
+  updateAccountDetails,
+  validateEmail,
+  validateUsername,
 } from './user.controller';
 
 export {
-  validateUsername,
-  validateEmail,
-  registerUser,
+  getCurrentUser,
   loginUser,
-  refreshAccessToken,
   logoutUser,
+  refreshAccessToken,
+  registerUser,
+  updateAccountDetails,
+  validateEmail,
+  validateUsername,
 };

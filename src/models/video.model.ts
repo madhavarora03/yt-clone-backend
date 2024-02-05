@@ -1,5 +1,5 @@
+import { VideoDocument, VideoMethods, VideoModel } from '@/interfaces';
 import { Schema, model } from 'mongoose';
-import { VideoDocument, VideoModel, VideoMethods } from '@/interfaces';
 
 const videoSchema = new Schema<VideoDocument, VideoModel, VideoMethods>(
   {

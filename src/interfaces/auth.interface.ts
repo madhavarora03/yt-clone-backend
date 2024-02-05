@@ -1,6 +1,6 @@
-import { Request } from 'express';
 import { UserDocument } from '@/interfaces';
+import { Request } from 'express';
 
-export interface AuthenticationRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: UserDocument;
 }

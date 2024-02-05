@@ -1,12 +1,12 @@
 import { ACCESS_TOKEN_SECRET } from '@/config';
-import { AuthenticationRequest } from '@/interfaces';
+import { AuthenticatedRequest } from '@/interfaces';
 import { User } from '@/models';
 import HttpError from '@/utils/HttpError';
 import catchAsync from '@/utils/catchAsync';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export const verifyJwt = catchAsync(
-  async (req: AuthenticationRequest, _, next) => {
+  async (req: AuthenticatedRequest, _, next) => {
     try {
       const token =
         req.cookies?.accessToken || req.header('Authorization')?.split(' ')[1];
