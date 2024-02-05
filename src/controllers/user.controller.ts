@@ -6,6 +6,7 @@ import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import { generateAccessAndRefreshTokens } from '@/utils/generateTokens';
+import { putObjectUrl } from '@/utils/s3';
 import { Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
@@ -203,7 +204,7 @@ export const getCurrentUser = catchAsync(
 );
 
 export const updateAccountDetails = catchAsync(
-  async (req: AuthenticatedRequest, res) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     const { email, fullName, bio } = req.body;
 
     if (!email || !fullName || !bio) {
@@ -226,6 +227,71 @@ export const updateAccountDetails = catchAsync(
           200,
           { user },
           'Account details updated successfully!',
+        ),
+      );
+  },
+);
+
+export const changeCurrentPassword = catchAsync(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findById(req.user?._id);
+
+    const isPasswordCorrect = await user?.matchPassword(oldPassword);
+
+    if (!isPasswordCorrect) {
+      throw new HttpError(400, 'Invalid old password');
+    }
+
+    user!.password = newPassword;
+
+    await user?.save({ validateBeforeSave: false });
+
+    return res
+      .status(200)
+      .json(new HttpResponse(200, {}, 'Password changed successfully!'));
+  },
+);
+
+export const getUploadAvatarUrl = catchAsync(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { name, type } = req.body.avatarInfo;
+    const avatarPutUrl = await putObjectUrl(
+      req.user?.username as string,
+      'profile',
+      `avatar.${name.split('.').pop() as string}`,
+      type,
+    );
+
+    return res
+      .status(200)
+      .json(
+        new HttpResponse(
+          200,
+          { avatarPutUrl },
+          'Avatar upload URL generated successfully!',
+        ),
+      );
+  },
+);
+
+export const getUploadCoverImageUrl = catchAsync(
+  async (req: AuthenticatedRequest, res) => {
+    const { name, type } = req.body.coverInfo;
+    const coverPutUrl = await putObjectUrl(
+      req.user?.username as string,
+      'profile',
+      `cover.${name.split('.').pop() as string}`,
+      type,
+    );
+
+    return res
+      .status(200)
+      .json(
+        new HttpResponse(
+          200,
+          { coverPutUrl },
+          'Cover image upload URL generated successfully!',
         ),
       );
   },

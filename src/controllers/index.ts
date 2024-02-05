@@ -1,5 +1,8 @@
 import {
+  changeCurrentPassword,
   getCurrentUser,
+  getUploadAvatarUrl,
+  getUploadCoverImageUrl,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -10,7 +13,10 @@ import {
 } from './user.controller';
 
 export {
+  changeCurrentPassword,
   getCurrentUser,
+  getUploadAvatarUrl,
+  getUploadCoverImageUrl,
   loginUser,
   logoutUser,
   refreshAccessToken,

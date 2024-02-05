@@ -1,5 +1,8 @@
 import {
+  changeCurrentPassword,
   getCurrentUser,
+  getUploadAvatarUrl,
+  getUploadCoverImageUrl,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -20,8 +23,13 @@ router.route('/login').post(loginUser);
 router.route('/refresh-token').post(refreshAccessToken);
 
 // protected routes
-router.route('/logout').post(verifyJwt, logoutUser);
 router.route('/me').get(verifyJwt, getCurrentUser);
+router.route('/upload-avatar').get(verifyJwt, getUploadAvatarUrl);
+router.route('/upload-cover-image').get(verifyJwt, getUploadCoverImageUrl);
+
+router.route('/logout').post(verifyJwt, logoutUser);
+router.route('/change-password').post(verifyJwt, changeCurrentPassword);
+
 router.route('/update-details').patch(verifyJwt, updateAccountDetails);
 
 export default router;
