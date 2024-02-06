@@ -9,6 +9,7 @@ import { generateAccessAndRefreshTokens } from '@/utils/generateTokens';
 import { putObjectUrl } from '@/utils/s3';
 import { Request } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 export const validateUsername = catchAsync(async (req: Request, res) => {
   const { username } = req.body;
@@ -373,6 +374,61 @@ export const getUserChannelProfile = catchAsync(
           200,
           { channel: channel[0] },
           'Channel profile fetched successfully!',
+        ),
+      );
+  },
+);
+
+export const getWatchHistory = catchAsync(
+  async (req: AuthenticatedRequest, res) => {
+    const user = await User.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(req.user?._id),
+        },
+      },
+      {
+        $lookup: {
+          from: 'videos',
+          localField: 'watchHistory',
+          foreignField: '_id',
+          as: 'watchHistory',
+          pipeline: [
+            {
+              $lookup: {
+                from: 'users',
+                localField: 'owner',
+                foreignField: '_id',
+                as: 'owner',
+                pipeline: [
+                  {
+                    $project: {
+                      fullName: 1,
+                      username: 1,
+                      avatar: 1,
+                    },
+                  },
+                  {
+                    $addFields: {
+                      owner: {
+                        $first: '$owner',
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ]);
+    return res
+      .status(200)
+      .json(
+        new HttpResponse(
+          200,
+          { watchHistory: user[0].watchHistory },
+          'Watch history fetched successfully!',
         ),
       );
   },

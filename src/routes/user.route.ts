@@ -4,6 +4,7 @@ import {
   getUploadAvatarUrl,
   getUploadCoverImageUrl,
   getUserChannelProfile,
+  getWatchHistory,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -25,6 +26,7 @@ router.route('/refresh-token').post(refreshAccessToken);
 
 // protected routes
 router.route('/me').get(verifyJwt, getCurrentUser);
+
 router.route('/get-avatar-url').get(verifyJwt, getUploadAvatarUrl);
 router.route('/get-cover-image-url').get(verifyJwt, getUploadCoverImageUrl);
 
@@ -34,5 +36,6 @@ router.route('/change-password').post(verifyJwt, changeCurrentPassword);
 router.route('/update-details').patch(verifyJwt, updateAccountDetails);
 
 router.route('/c/:username').get(verifyJwt, getUserChannelProfile);
+router.route('/history').get(verifyJwt, getWatchHistory);
 
 export default router;
