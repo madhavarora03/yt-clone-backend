@@ -1,5 +1,5 @@
-import { REFRESH_TOKEN_SECRET } from '@/config';
-import { cookieOptions } from '@/constants';
+import { AWS_REGION, REFRESH_TOKEN_SECRET } from '@/config';
+import { AWS_S3_BUCKET_NAME, cookieOptions } from '@/constants';
 import { AuthenticatedRequest } from '@/interfaces';
 import { User } from '@/models';
 import HttpError from '@/utils/HttpError';
@@ -255,7 +255,11 @@ export const changeCurrentPassword = catchAsync(
 
 export const getUploadAvatarUrl = catchAsync(
   async (req: AuthenticatedRequest, res: Response) => {
-    const { name, type } = req.body.avatarInfo;
+    const { name, type } = req.query as {
+      name: string;
+      type: string;
+    };
+
     const avatarPutUrl = await putObjectUrl(
       req.user?.username as string,
       'profile',
@@ -263,21 +267,26 @@ export const getUploadAvatarUrl = catchAsync(
       type,
     );
 
-    return res
-      .status(200)
-      .json(
-        new HttpResponse(
-          200,
-          { avatarPutUrl },
-          'Avatar upload URL generated successfully!',
-        ),
-      );
+    return res.status(200).json(
+      new HttpResponse(
+        200,
+        {
+          uploadUrl: avatarPutUrl,
+          contentUrl: `https://${AWS_S3_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/uploads/${req.user?.username}/profile/avatar.${name.split('.').pop() as string}`,
+        },
+        'Avatar upload URL generated successfully!',
+      ),
+    );
   },
 );
 
 export const getUploadCoverImageUrl = catchAsync(
   async (req: AuthenticatedRequest, res) => {
-    const { name, type } = req.body.coverInfo;
+    const { name, type } = req.query as {
+      name: string;
+      type: string;
+    };
+
     const coverPutUrl = await putObjectUrl(
       req.user?.username as string,
       'profile',
@@ -285,14 +294,15 @@ export const getUploadCoverImageUrl = catchAsync(
       type,
     );
 
-    return res
-      .status(200)
-      .json(
-        new HttpResponse(
-          200,
-          { coverPutUrl },
-          'Cover image upload URL generated successfully!',
-        ),
-      );
+    return res.status(200).json(
+      new HttpResponse(
+        200,
+        {
+          uploadUrl: coverPutUrl,
+          contentUrl: `https://${AWS_S3_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/uploads/${req.user?.username}/profile/cover.${name.split('.').pop() as string}`,
+        },
+        'Cover image upload URL generated successfully!',
+      ),
+    );
   },
 );

@@ -24,8 +24,8 @@ router.route('/refresh-token').post(refreshAccessToken);
 
 // protected routes
 router.route('/me').get(verifyJwt, getCurrentUser);
-router.route('/upload-avatar').get(verifyJwt, getUploadAvatarUrl);
-router.route('/upload-cover-image').get(verifyJwt, getUploadCoverImageUrl);
+router.route('/get-avatar-url').get(verifyJwt, getUploadAvatarUrl);
+router.route('/get-cover-image-url').get(verifyJwt, getUploadCoverImageUrl);
 
 router.route('/logout').post(verifyJwt, logoutUser);
 router.route('/change-password').post(verifyJwt, changeCurrentPassword);
