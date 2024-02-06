@@ -7,26 +7,24 @@ import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import { generateAccessAndRefreshTokens } from '@/utils/generateTokens';
 import { putObjectUrl } from '@/utils/s3';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-export const validateUsername = catchAsync(
-  async (req: Request, res: Response) => {
-    const { username } = req.body;
-    if (username.trim() === '' || username === undefined) {
-      throw new HttpError(400, 'Username is required');
-    }
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      throw new HttpError(409, 'Username already exists');
-    }
-    return res
-      .status(200)
-      .json(new HttpResponse(200, { username }, 'Username is available'));
-  },
-);
+export const validateUsername = catchAsync(async (req: Request, res) => {
+  const { username } = req.body;
+  if (username.trim() === '' || username === undefined) {
+    throw new HttpError(400, 'Username is required');
+  }
+  const existingUser = await User.findOne({ username });
+  if (existingUser) {
+    throw new HttpError(409, 'Username already exists');
+  }
+  return res
+    .status(200)
+    .json(new HttpResponse(200, { username }, 'Username is available'));
+});
 
-export const validateEmail = catchAsync(async (req: Request, res: Response) => {
+export const validateEmail = catchAsync(async (req: Request, res) => {
   const { email } = req.body;
   if (email.trim() === '' || email === undefined) {
     throw new HttpError(400, 'Email is required');
@@ -40,7 +38,7 @@ export const validateEmail = catchAsync(async (req: Request, res: Response) => {
     .json(new HttpResponse(200, { email }, 'Email is available'));
 });
 
-export const registerUser = catchAsync(async (req: Request, res: Response) => {
+export const registerUser = catchAsync(async (req: Request, res) => {
   const { username, email, fullName, bio, password } = req.body;
   if (
     [username, email, fullName, bio, password].some(
@@ -91,7 +89,7 @@ export const registerUser = catchAsync(async (req: Request, res: Response) => {
     );
 });
 
-export const loginUser = catchAsync(async (req: Request, res: Response) => {
+export const loginUser = catchAsync(async (req: Request, res) => {
   const { username, email, password } = req.body;
 
   if (!username && !email) {
@@ -131,67 +129,63 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
     );
 });
 
-export const refreshAccessToken = catchAsync(
-  async (req: Request, res: Response) => {
-    const incomingRefreshToken =
-      req.cookies.refreshToken || req.body.refreshToken;
+export const refreshAccessToken = catchAsync(async (req: Request, res) => {
+  const incomingRefreshToken =
+    req.cookies.refreshToken || req.body.refreshToken;
 
-    if (!incomingRefreshToken) {
-      throw new HttpError(401, 'Unauthorized request');
-    }
+  if (!incomingRefreshToken) {
+    throw new HttpError(401, 'Unauthorized request');
+  }
 
-    try {
-      const decodedToken: JwtPayload = jwt.verify(
-        incomingRefreshToken,
-        REFRESH_TOKEN_SECRET,
-      ) as JwtPayload;
+  try {
+    const decodedToken: JwtPayload = jwt.verify(
+      incomingRefreshToken,
+      REFRESH_TOKEN_SECRET,
+    ) as JwtPayload;
 
-      const user = await User.findById(decodedToken?._id);
+    const user = await User.findById(decodedToken?._id);
 
-      if (!user) {
-        throw new HttpError(401, 'Invalid refresh token');
-      }
-
-      if (user.refreshToken !== incomingRefreshToken) {
-        throw new HttpError(401, 'Refresh token is expired or used');
-      }
-
-      const { accessToken, refreshToken: newRefreshToken } =
-        await generateAccessAndRefreshTokens(user._id);
-      return res
-        .status(200)
-        .cookie('accessToken', accessToken, cookieOptions)
-        .cookie('refreshToken', newRefreshToken, cookieOptions)
-        .json(
-          new HttpResponse(
-            200,
-            { accessToken, refreshToken: newRefreshToken },
-            'Access token refreshed!',
-          ),
-        );
-    } catch (error) {
+    if (!user) {
       throw new HttpError(401, 'Invalid refresh token');
     }
-  },
-);
 
-export const logoutUser = catchAsync(
-  async (req: AuthenticatedRequest, res: Response) => {
-    await User.findByIdAndUpdate(
-      req.user?._id,
-      {
-        $set: { refreshToken: undefined },
-      },
-      { new: true },
-    );
+    if (user.refreshToken !== incomingRefreshToken) {
+      throw new HttpError(401, 'Refresh token is expired or used');
+    }
 
+    const { accessToken, refreshToken: newRefreshToken } =
+      await generateAccessAndRefreshTokens(user._id);
     return res
       .status(200)
-      .clearCookie('accessToken', cookieOptions)
-      .clearCookie('refreshToken', cookieOptions)
-      .json(new HttpResponse(200, {}, 'User logged out successfully!'));
-  },
-);
+      .cookie('accessToken', accessToken, cookieOptions)
+      .cookie('refreshToken', newRefreshToken, cookieOptions)
+      .json(
+        new HttpResponse(
+          200,
+          { accessToken, refreshToken: newRefreshToken },
+          'Access token refreshed!',
+        ),
+      );
+  } catch (error) {
+    throw new HttpError(401, 'Invalid refresh token');
+  }
+});
+
+export const logoutUser = catchAsync(async (req: AuthenticatedRequest, res) => {
+  await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: { refreshToken: undefined },
+    },
+    { new: true },
+  );
+
+  return res
+    .status(200)
+    .clearCookie('accessToken', cookieOptions)
+    .clearCookie('refreshToken', cookieOptions)
+    .json(new HttpResponse(200, {}, 'User logged out successfully!'));
+});
 
 export const getCurrentUser = catchAsync(
   async (req: AuthenticatedRequest, res) => {
@@ -204,7 +198,7 @@ export const getCurrentUser = catchAsync(
 );
 
 export const updateAccountDetails = catchAsync(
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: AuthenticatedRequest, res) => {
     const { email, fullName, bio } = req.body;
 
     if (!email || !fullName || !bio) {
@@ -233,7 +227,7 @@ export const updateAccountDetails = catchAsync(
 );
 
 export const changeCurrentPassword = catchAsync(
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: AuthenticatedRequest, res) => {
     const { oldPassword, newPassword } = req.body;
     const user = await User.findById(req.user?._id);
 
@@ -254,7 +248,7 @@ export const changeCurrentPassword = catchAsync(
 );
 
 export const getUploadAvatarUrl = catchAsync(
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: AuthenticatedRequest, res) => {
     const { name, type } = req.query as {
       name: string;
       type: string;
@@ -304,5 +298,82 @@ export const getUploadCoverImageUrl = catchAsync(
         'Cover image upload URL generated successfully!',
       ),
     );
+  },
+);
+
+export const getUserChannelProfile = catchAsync(
+  async (req: AuthenticatedRequest, res) => {
+    const { username } = req.params;
+
+    if (!username?.trim()) {
+      throw new HttpError(400, 'Username is required');
+    }
+
+    const channel = await User.aggregate([
+      {
+        $match: {
+          username: username?.toLowerCase(),
+        },
+      },
+      {
+        $lookup: {
+          from: 'subscribers',
+          localField: '_id',
+          foreignField: 'channel',
+          as: 'subscribers',
+        },
+      },
+      {
+        $lookup: {
+          from: 'subscribers',
+          localField: '_id',
+          foreignField: 'subscriber',
+          as: 'subscribedTo',
+        },
+      },
+      {
+        $addFields: {
+          subscriberCount: { $size: '$subscribers' },
+          channelsSubscribedToCount: { $size: '$subscribedTo' },
+          isSubscribed: {
+            $cond: {
+              if: {
+                $in: [req.user?._id, '$subscribers.subscriber'],
+              },
+              then: true,
+              else: false,
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          fullName: 1,
+          username: 1,
+          subsriberCount: 1,
+          channelsSubscribedToCount: 1,
+          isSubscribed: 1,
+          avatar: 1,
+          cover: 1,
+          bio: 1,
+          email: 1,
+          createdAt: 1,
+        },
+      },
+    ]);
+
+    if (channel.length === 0) {
+      throw new HttpError(404, 'Channel does not exist');
+    }
+
+    return res
+      .status(200)
+      .json(
+        new HttpResponse(
+          200,
+          { channel: channel[0] },
+          'Channel profile fetched successfully!',
+        ),
+      );
   },
 );

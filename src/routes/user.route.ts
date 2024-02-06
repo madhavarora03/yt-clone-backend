@@ -3,6 +3,7 @@ import {
   getCurrentUser,
   getUploadAvatarUrl,
   getUploadCoverImageUrl,
+  getUserChannelProfile,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -31,5 +32,7 @@ router.route('/logout').post(verifyJwt, logoutUser);
 router.route('/change-password').post(verifyJwt, changeCurrentPassword);
 
 router.route('/update-details').patch(verifyJwt, updateAccountDetails);
+
+router.route('/c/:username').get(verifyJwt, getUserChannelProfile);
 
 export default router;
