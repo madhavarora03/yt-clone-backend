@@ -15,8 +15,19 @@ import {
   VideoModel,
 } from './video.interface';
 
+import {
+  Subscription,
+  SubscriptionDocument,
+  SubscriptionMethods,
+  SubscriptionModel,
+} from './subscription.interface';
+
 export {
   AuthenticatedRequest,
+  Subscription,
+  SubscriptionDocument,
+  SubscriptionMethods,
+  SubscriptionModel,
   User,
   UserDocument,
   UserMethods,
