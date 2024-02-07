@@ -14,6 +14,8 @@ import {
   validateUsername,
 } from './user.controller';
 
+import { healthCheck } from './healthcheck.controller';
+
 export {
   changeCurrentPassword,
   getCurrentUser,
@@ -21,6 +23,7 @@ export {
   getUploadCoverImageUrl,
   getUserChannelProfile,
   getWatchHistory,
+  healthCheck,
   loginUser,
   logoutUser,
   refreshAccessToken,
