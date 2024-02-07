@@ -22,12 +22,51 @@ import {
   SubscriptionModel,
 } from './subscription.interface';
 
+import {
+  Comment,
+  CommentDocument,
+  CommentMethods,
+  CommentModel,
+} from './comment.interface';
+
+import { Like, LikeDocument, LikeMethods, LikeModel } from './like.interface';
+
+import {
+  Playlist,
+  PlaylistDocument,
+  PlaylistMethods,
+  PlaylistModel,
+} from './playlist.interface';
+
+import {
+  Tweet,
+  TweetDocument,
+  TweetMethods,
+  TweetModel,
+} from './tweet.interface';
+
 export {
   AuthenticatedRequest,
+  Comment,
+  CommentDocument,
+  CommentMethods,
+  CommentModel,
+  Like,
+  LikeDocument,
+  LikeMethods,
+  LikeModel,
+  Playlist,
+  PlaylistDocument,
+  PlaylistMethods,
+  PlaylistModel,
   Subscription,
   SubscriptionDocument,
   SubscriptionMethods,
   SubscriptionModel,
+  Tweet,
+  TweetDocument,
+  TweetMethods,
+  TweetModel,
   User,
   UserDocument,
   UserMethods,
