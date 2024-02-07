@@ -18,6 +18,7 @@ import { Router } from 'express';
 
 const router = Router();
 
+// public routes
 router.route('/validate-username').post(validateUsername);
 router.route('/validate-email').post(validateEmail);
 router.route('/register').post(registerUser);
@@ -25,17 +26,18 @@ router.route('/login').post(loginUser);
 router.route('/refresh-token').post(refreshAccessToken);
 
 // protected routes
-router.route('/me').get(verifyJwt, getCurrentUser);
+router.use(verifyJwt);
+router.route('/me').get(getCurrentUser);
 
-router.route('/get-avatar-url').get(verifyJwt, getUploadAvatarUrl);
-router.route('/get-cover-image-url').get(verifyJwt, getUploadCoverImageUrl);
+router.route('/get-avatar-url').get(getUploadAvatarUrl);
+router.route('/get-cover-image-url').get(getUploadCoverImageUrl);
 
-router.route('/logout').post(verifyJwt, logoutUser);
-router.route('/change-password').post(verifyJwt, changeCurrentPassword);
+router.route('/logout').post(logoutUser);
+router.route('/change-password').post(changeCurrentPassword);
 
-router.route('/update-details').patch(verifyJwt, updateAccountDetails);
+router.route('/update-details').patch(updateAccountDetails);
 
-router.route('/c/:username').get(verifyJwt, getUserChannelProfile);
-router.route('/history').get(verifyJwt, getWatchHistory);
+router.route('/c/:username').get(getUserChannelProfile);
+router.route('/history').get(getWatchHistory);
 
 export default router;
