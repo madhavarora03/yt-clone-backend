@@ -16,6 +16,13 @@ import {
 
 import { healthCheck } from './healthcheck.controller';
 
+import {
+  createTweet,
+  deleteTweet,
+  getUserTweets,
+  updateTweet,
+} from './tweet.controller';
+
 export {
   changeCurrentPassword,
   getCurrentUser,
@@ -23,7 +30,6 @@ export {
   getUploadCoverImageUrl,
   getUserChannelProfile,
   getWatchHistory,
-  healthCheck,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -32,3 +38,7 @@ export {
   validateEmail,
   validateUsername,
 };
+
+export { healthCheck };
+
+export { createTweet, deleteTweet, getUserTweets, updateTweet };
