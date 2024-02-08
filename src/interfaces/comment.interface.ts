@@ -1,4 +1,4 @@
-import { Document, Model, Schema } from 'mongoose';
+import { AggregatePaginateModel, Document, Model, Schema } from 'mongoose';
 
 export interface Comment {
   content: string;
@@ -14,4 +14,4 @@ export interface CommentDocument extends Comment, Document {}
 export interface CommentMethods {}
 
 export interface CommentModel
-  extends Model<Comment, CommentDocument, CommentMethods> {}
+  extends Model<CommentDocument, AggregatePaginateModel<CommentDocument>> {}

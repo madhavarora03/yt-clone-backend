@@ -28,4 +28,4 @@ export interface UserMethods {
   generateRefreshToken: () => string;
 }
 
-export interface UserModel extends Model<User, UserDocument, UserMethods> {}
+export interface UserModel extends Model<UserDocument, UserMethods> {}

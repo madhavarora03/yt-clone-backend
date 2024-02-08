@@ -1,4 +1,4 @@
-import { Document, Model, Schema } from 'mongoose';
+import { AggregatePaginateModel, Document, Model, Schema } from 'mongoose';
 
 export interface Video {
   videoFile: string;
@@ -18,4 +18,6 @@ export interface VideoDocument extends Video, Document {}
 
 export interface VideoMethods {}
 
-export interface VideoModel extends Model<Video, VideoDocument, VideoMethods> {}
+export interface VideoModel
+  extends Model<VideoDocument>,
+    AggregatePaginateModel<VideoDocument> {}

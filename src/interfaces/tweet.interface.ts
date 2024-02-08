@@ -12,4 +12,4 @@ export interface TweetDocument extends Tweet, Document {}
 
 export interface TweetMethods {}
 
-export interface TweetModel extends Model<TweetDocument, TweetMethods> {}
+export interface TweetModel extends Model<TweetDocument> {}
