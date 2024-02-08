@@ -28,15 +28,11 @@ export const getUserTweets = catchAsync(async (req, res) => {
 export const updateTweet = catchAsync(async (req, res) => {
   const { content: newContent } = req.body;
 
-  console.log(req.params?.tweetId);
-
   const tweet = await Tweet.findByIdAndUpdate(
     req.params?.tweetId,
     { $set: { content: newContent } },
     { new: true },
   );
-
-  console.log(tweet);
 
   return res
     .status(200)
