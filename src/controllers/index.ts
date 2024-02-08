@@ -23,6 +23,13 @@ import {
   updateTweet,
 } from './tweet.controller';
 
+import {
+  getLikedVideos,
+  toggleCommentLike,
+  toggleTweetLike,
+  toggleVideoLike,
+} from './like.controller';
+
 export {
   changeCurrentPassword,
   getCurrentUser,
@@ -42,3 +49,5 @@ export {
 export { healthCheck };
 
 export { createTweet, deleteTweet, getUserTweets, updateTweet };
+
+export { getLikedVideos, toggleCommentLike, toggleTweetLike, toggleVideoLike };
