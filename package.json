@@ -2,6 +2,10 @@
   "name": "yt-clone-backend",
   "version": "1.0.0",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madhavarora03/yt-clone-backend"
+  },
   "main": "index.js",
   "scripts": {
     "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
