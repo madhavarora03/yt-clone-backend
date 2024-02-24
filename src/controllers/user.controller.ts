@@ -11,6 +11,11 @@ import { Request } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
+/**
+ * Validate Username.
+ * @route POST /validate-username
+ */
+
 export const validateUsername = catchAsync(async (req: Request, res) => {
   const { username } = req.body;
   if (username.trim() === '' || username === undefined) {
@@ -25,6 +30,11 @@ export const validateUsername = catchAsync(async (req: Request, res) => {
     .json(new HttpResponse(200, { username }, 'Username is available'));
 });
 
+/**
+ * Validate Email.
+ * @route POST /validate-email
+ */
+
 export const validateEmail = catchAsync(async (req: Request, res) => {
   const { email } = req.body;
   if (email.trim() === '' || email === undefined) {
@@ -38,6 +48,11 @@ export const validateEmail = catchAsync(async (req: Request, res) => {
     .status(200)
     .json(new HttpResponse(200, { email }, 'Email is available'));
 });
+
+/**
+ * Register new user.
+ * @route POST /register
+ */
 
 export const registerUser = catchAsync(async (req: Request, res) => {
   const { username, email, fullName, bio, password } = req.body;
@@ -90,6 +105,11 @@ export const registerUser = catchAsync(async (req: Request, res) => {
     );
 });
 
+/**
+ * Login user.
+ * @route POST /login
+ */
+
 export const loginUser = catchAsync(async (req: Request, res) => {
   const { username, email, password } = req.body;
 
@@ -129,6 +149,11 @@ export const loginUser = catchAsync(async (req: Request, res) => {
       ),
     );
 });
+
+/**
+ * Refresh access token.
+ * @route POST /refresh-token
+ */
 
 export const refreshAccessToken = catchAsync(async (req: Request, res) => {
   const incomingRefreshToken =
@@ -172,6 +197,12 @@ export const refreshAccessToken = catchAsync(async (req: Request, res) => {
   }
 });
 
+/**
+ * Logout user.
+ * @route POST /logout
+ * @access Private
+ */
+
 export const logoutUser = catchAsync(async (req: AuthenticatedRequest, res) => {
   await User.findByIdAndUpdate(
     req.user?._id,
@@ -197,6 +228,12 @@ export const getCurrentUser = catchAsync(
       );
   },
 );
+
+/**
+ * Update account details.
+ * @route PATCH /update-details
+ * @access Private
+ */
 
 export const updateAccountDetails = catchAsync(
   async (req: AuthenticatedRequest, res) => {
@@ -250,16 +287,12 @@ export const changeCurrentPassword = catchAsync(
 
 export const getUploadAvatarUrl = catchAsync(
   async (req: AuthenticatedRequest, res) => {
-    const { name, type } = req.query as {
-      name: string;
-      type: string;
-    };
+    const { name } = req.query as { name: string };
 
     const avatarPutUrl = await putObjectUrl(
       req.user?.username as string,
       'profile',
       `avatar.${name.split('.').pop() as string}`,
-      type,
     );
 
     return res.status(200).json(
@@ -277,16 +310,12 @@ export const getUploadAvatarUrl = catchAsync(
 
 export const getUploadCoverImageUrl = catchAsync(
   async (req: AuthenticatedRequest, res) => {
-    const { name, type } = req.query as {
-      name: string;
-      type: string;
-    };
+    const { name } = req.query as { name: string };
 
     const coverPutUrl = await putObjectUrl(
       req.user?.username as string,
       'profile',
       `cover.${name.split('.').pop() as string}`,
-      type,
     );
 
     return res.status(200).json(
