@@ -30,6 +30,12 @@ import {
   toggleVideoLike,
 } from './like.controller';
 
+import {
+  getSubscribedChannels,
+  getUserChannelSubscribers,
+  toggleSubscription,
+} from './subscription.controller';
+
 export {
   changeCurrentPassword,
   getCurrentUser,
@@ -51,3 +57,5 @@ export { healthCheck };
 export { createTweet, deleteTweet, getUserTweets, updateTweet };
 
 export { getLikedVideos, toggleCommentLike, toggleTweetLike, toggleVideoLike };
+
+export { getSubscribedChannels, getUserChannelSubscribers, toggleSubscription };

@@ -7,7 +7,6 @@ import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import { generateAccessAndRefreshTokens } from '@/utils/generateTokens';
 import { putObjectUrl } from '@/utils/s3';
-import { Request } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
@@ -16,7 +15,7 @@ import mongoose from 'mongoose';
  * @route POST /validate-username
  */
 
-export const validateUsername = catchAsync(async (req: Request, res) => {
+export const validateUsername = catchAsync(async (req, res) => {
   const { username } = req.body;
   if (username.trim() === '' || username === undefined) {
     throw new HttpError(400, 'Username is required');
@@ -35,7 +34,7 @@ export const validateUsername = catchAsync(async (req: Request, res) => {
  * @route POST /validate-email
  */
 
-export const validateEmail = catchAsync(async (req: Request, res) => {
+export const validateEmail = catchAsync(async (req, res) => {
   const { email } = req.body;
   if (email.trim() === '' || email === undefined) {
     throw new HttpError(400, 'Email is required');
@@ -54,7 +53,7 @@ export const validateEmail = catchAsync(async (req: Request, res) => {
  * @route POST /register
  */
 
-export const registerUser = catchAsync(async (req: Request, res) => {
+export const registerUser = catchAsync(async (req, res) => {
   const { username, email, fullName, bio, password } = req.body;
   if (
     [username, email, fullName, bio, password].some(
@@ -110,7 +109,7 @@ export const registerUser = catchAsync(async (req: Request, res) => {
  * @route POST /login
  */
 
-export const loginUser = catchAsync(async (req: Request, res) => {
+export const loginUser = catchAsync(async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username && !email) {
@@ -155,7 +154,7 @@ export const loginUser = catchAsync(async (req: Request, res) => {
  * @route POST /refresh-token
  */
 
-export const refreshAccessToken = catchAsync(async (req: Request, res) => {
+export const refreshAccessToken = catchAsync(async (req, res) => {
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
 
@@ -347,7 +346,7 @@ export const getUserChannelProfile = catchAsync(
       },
       {
         $lookup: {
-          from: 'subscribers',
+          from: 'subscriptions',
           localField: '_id',
           foreignField: 'channel',
           as: 'subscribers',
@@ -355,7 +354,7 @@ export const getUserChannelProfile = catchAsync(
       },
       {
         $lookup: {
-          from: 'subscribers',
+          from: 'subscriptions',
           localField: '_id',
           foreignField: 'subscriber',
           as: 'subscribedTo',
@@ -380,7 +379,7 @@ export const getUserChannelProfile = catchAsync(
         $project: {
           fullName: 1,
           username: 1,
-          subsriberCount: 1,
+          subscriberCount: 1,
           channelsSubscribedToCount: 1,
           isSubscribed: 1,
           avatar: 1,
