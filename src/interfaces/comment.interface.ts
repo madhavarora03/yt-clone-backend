@@ -11,7 +11,8 @@ export interface Comment {
 
 export interface CommentDocument extends Comment, Document {}
 
-export interface CommentMethods {}
+export interface CommentMethods
+  extends AggregatePaginateModel<CommentDocument> {}
 
 export interface CommentModel
-  extends Model<CommentDocument, AggregatePaginateModel<CommentDocument>> {}
+  extends Model<Comment, CommentDocument, CommentMethods> {}

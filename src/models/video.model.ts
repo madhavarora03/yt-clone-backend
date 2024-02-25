@@ -48,6 +48,6 @@ const videoSchema = new Schema<VideoDocument, VideoModel, VideoMethods>(
 
 videoSchema.plugin(mongooseAggregatePaginate);
 
-const Video = model<VideoDocument, VideoModel>('Video', videoSchema);
+const Video = model<VideoModel>('Video', videoSchema);
 
 export default Video;

@@ -12,4 +12,4 @@ export interface SubscriptionDocument extends Subscription, Document {}
 
 export interface SubscriptionMethods {}
 
-export interface SubscriptionModel extends Model<SubscriptionDocument> {}
+export interface SubscriptionModel extends Model<Subscription, SubscriptionDocument, SubscriptionMethods> {}

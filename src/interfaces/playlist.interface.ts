@@ -14,4 +14,5 @@ export interface PlaylistDocument extends Playlist, Document {}
 
 export interface PlaylistMethods {}
 
-export interface PlaylistModel extends Model<PlaylistDocument> {}
+export interface PlaylistModel
+  extends Model<Playlist, PlaylistDocument, PlaylistMethods> {}

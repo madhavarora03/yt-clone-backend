@@ -24,6 +24,6 @@ const commentSchema = new Schema<CommentDocument, CommentModel, CommentMethods>(
 
 commentSchema.plugin(mongooseAggregatePaginate);
 
-const Comment = model<CommentDocument, CommentModel>('Comment', commentSchema);
+const Comment = model<CommentModel>('Comment', commentSchema);
 
 export default Comment;

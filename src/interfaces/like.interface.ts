@@ -14,4 +14,4 @@ export interface LikeDocument extends Like, Document {}
 
 export interface LikeMethods {}
 
-export interface LikeModel extends Model<LikeDocument> {}
+export interface LikeModel extends Model<Like, LikeDocument, LikeMethods> {}

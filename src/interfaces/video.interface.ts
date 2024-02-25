@@ -16,8 +16,6 @@ export interface Video {
 
 export interface VideoDocument extends Video, Document {}
 
-export interface VideoMethods {}
+export interface VideoMethods extends AggregatePaginateModel<VideoDocument> {}
 
-export interface VideoModel
-  extends Model<VideoDocument>,
-    AggregatePaginateModel<VideoDocument> {}
+export interface VideoModel extends Model<Video, VideoDocument, VideoMethods> {}
