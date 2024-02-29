@@ -36,6 +36,13 @@ import {
   toggleSubscription,
 } from './subscription.controller';
 
+import {
+  addComment,
+  deleteComment,
+  getVideoComments,
+  updateComment,
+} from './comment.controller';
+
 export {
   changeCurrentPassword,
   getCurrentUser,
@@ -59,3 +66,5 @@ export { createTweet, deleteTweet, getUserTweets, updateTweet };
 export { getLikedVideos, toggleCommentLike, toggleTweetLike, toggleVideoLike };
 
 export { getSubscribedChannels, getUserChannelSubscribers, toggleSubscription };
+
+export { addComment, deleteComment, getVideoComments, updateComment };
