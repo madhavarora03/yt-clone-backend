@@ -17,7 +17,7 @@ export const toggleSubscription = catchAsync(
     } else {
       await Subscription.create({ subscriber: user?._id, channel: channelId });
     }
-    res
+    return res
       .status(200)
       .json(
         new HttpResponse(
@@ -35,7 +35,7 @@ export const getUserChannelSubscribers = catchAsync(async (req, res) => {
     'subscriber',
   );
 
-  res
+  return res
     .status(200)
     .json(
       new HttpResponse(
@@ -53,7 +53,7 @@ export const getSubscribedChannels = catchAsync(
       subscriber: user?._id,
     }).populate('channel');
 
-    res
+    return res
       .status(200)
       .json(
         new HttpResponse(
