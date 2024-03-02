@@ -1,4 +1,11 @@
-import { AggregatePaginateModel, Document, Model, Schema } from 'mongoose';
+import {
+  Aggregate,
+  AggregatePaginateResult,
+  Document,
+  Model,
+  PaginateOptions,
+  Schema,
+} from 'mongoose';
 
 export interface Comment {
   content: string;
@@ -11,8 +18,14 @@ export interface Comment {
 
 export interface CommentDocument extends Comment, Document {}
 
-export interface CommentMethods
-  extends AggregatePaginateModel<CommentDocument> {}
+export interface CommentMethods {}
 
-export interface CommentModel
-  extends Model<Comment, CommentDocument, CommentMethods> {}
+// Manually define the CommentModel interface to include the aggregatePaginate method
+export interface CommentModel extends Model<CommentDocument> {
+  aggregatePaginate<T>(
+    query?: Aggregate<T[]>,
+    options?: PaginateOptions,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    callback?: (err: any, result: AggregatePaginateResult<T>) => void,
+  ): Promise<AggregatePaginateResult<T>>;
+}

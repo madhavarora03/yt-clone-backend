@@ -1,21 +1,58 @@
 import { AuthenticatedRequest } from '@/interfaces';
-import { Comment } from '@/models';
+import { Comment, Video } from '@/models';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
+import { ObjectId } from 'mongodb';
 
 export const getVideoComments = catchAsync(async (req, res) => {
   const { videoId } = req.params;
+
+  const doesVideoExist = await Video.exists({ _id: videoId });
+
+  if (!doesVideoExist) {
+    return res.status(404).json(new HttpResponse(404, {}, 'Video not found!'));
+  }
+
   const { page = '1', limit = '10' } = req.query as {
     page: string;
     limit: string;
   };
 
-  const comments = await Comment.find({ video: videoId })
-    .limit(Number(limit))
-    .skip((Number(page) - 1) * Number(limit))
-    .populate('user');
+  const options = {
+    page: parseInt(page, 10),
+    limit: parseInt(limit, 10),
+    sort: { createdAt: -1 },
+  };
 
-  console.log(comments);
+  const comments = await Comment.aggregatePaginate(
+    // | DEBUG | There is an issue with the aggregatePaginate method, fix it
+    Comment.aggregate([
+      { $match: { video: new ObjectId(videoId) } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'owner',
+          foreignField: '_id',
+          as: 'owner',
+        },
+      },
+      { $unwind: '$owner' },
+      {
+        $project: {
+          _id: 1,
+          content: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          owner: {
+            _id: 1,
+            username: 1,
+            avatar: 1,
+          },
+        },
+      },
+    ]),
+    options,
+  );
 
   return res
     .status(200)
@@ -28,6 +65,12 @@ export const addComment = catchAsync(async (req: AuthenticatedRequest, res) => {
   const { videoId } = req.params as { videoId: string };
 
   const { user } = req;
+
+  const doesVideoExist = await Video.exists({ _id: videoId });
+
+  if (!doesVideoExist) {
+    return res.status(404).json(new HttpResponse(404, {}, 'Video not found!'));
+  }
 
   const comment = await Comment.create({
     content: req?.body?.content,

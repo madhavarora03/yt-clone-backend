@@ -45,35 +45,23 @@ import {
   TweetModel,
 } from './tweet.interface';
 
+export { AuthenticatedRequest };
+
+export { Comment, CommentDocument, CommentMethods, CommentModel };
+
+export { Like, LikeDocument, LikeMethods, LikeModel };
+
+export { Playlist, PlaylistDocument, PlaylistMethods, PlaylistModel };
+
 export {
-  AuthenticatedRequest,
-  Comment,
-  CommentDocument,
-  CommentMethods,
-  CommentModel,
-  Like,
-  LikeDocument,
-  LikeMethods,
-  LikeModel,
-  Playlist,
-  PlaylistDocument,
-  PlaylistMethods,
-  PlaylistModel,
   Subscription,
   SubscriptionDocument,
   SubscriptionMethods,
   SubscriptionModel,
-  Tweet,
-  TweetDocument,
-  TweetMethods,
-  TweetModel,
-  User,
-  UserDocument,
-  UserMethods,
-  UserModel,
-  Video,
-  VideoDocument,
-  VideoMethods,
-  VideoModel,
-  WatchHistory,
 };
+
+export { Tweet, TweetDocument, TweetMethods, TweetModel };
+
+export { User, UserDocument, UserMethods, UserModel, WatchHistory };
+
+export { Video, VideoDocument, VideoMethods, VideoModel };
