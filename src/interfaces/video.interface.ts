@@ -1,4 +1,4 @@
-import { AggregatePaginateModel, Document, Model, Schema } from 'mongoose';
+import { Aggregate, AggregatePaginateResult, Document, Model, PaginateOptions, Schema } from 'mongoose';
 
 export interface Video {
   videoFile: string;
@@ -16,6 +16,13 @@ export interface Video {
 
 export interface VideoDocument extends Video, Document {}
 
-export interface VideoMethods extends AggregatePaginateModel<VideoDocument> {}
+export interface VideoMethods {}
 
-export interface VideoModel extends Model<Video, VideoDocument, VideoMethods> {}
+export interface VideoModel extends Model<Video, VideoDocument, VideoMethods> {
+  aggregatePaginate<T>(
+    query?: Aggregate<T[]>,
+    options?: PaginateOptions,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    callback?: (err: any, result: AggregatePaginateResult<T>) => void,
+  ): Promise<AggregatePaginateResult<T>>;
+}

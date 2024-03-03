@@ -43,6 +43,15 @@ import {
   updateComment,
 } from './comment.controller';
 
+import {
+  deleteVideo,
+  getVideoById,
+  getVideos,
+  publishVideo,
+  togglePublishStatus,
+  updateVideo,
+} from './video.controller';
+
 export {
   changeCurrentPassword,
   getCurrentUser,
@@ -68,3 +77,12 @@ export { getLikedVideos, toggleCommentLike, toggleTweetLike, toggleVideoLike };
 export { getSubscribedChannels, getUserChannelSubscribers, toggleSubscription };
 
 export { addComment, deleteComment, getVideoComments, updateComment };
+
+export {
+  deleteVideo,
+  getVideoById,
+  getVideos,
+  publishVideo,
+  togglePublishStatus,
+  updateVideo,
+};

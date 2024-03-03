@@ -2,7 +2,7 @@ import { AuthenticatedRequest } from '@/interfaces';
 import { Comment, Video } from '@/models';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
-import { ObjectId } from 'mongodb';
+import mongoose from 'mongoose';
 
 export const getVideoComments = catchAsync(async (req, res) => {
   const { videoId } = req.params;
@@ -25,9 +25,8 @@ export const getVideoComments = catchAsync(async (req, res) => {
   };
 
   const comments = await Comment.aggregatePaginate(
-    // | DEBUG | There is an issue with the aggregatePaginate method, fix it
     Comment.aggregate([
-      { $match: { video: new ObjectId(videoId) } },
+      { $match: { video: new mongoose.Types.ObjectId(videoId) } },
       {
         $lookup: {
           from: 'users',

@@ -416,11 +416,14 @@ export const getWatchHistory = catchAsync(
         },
       },
       {
+        $unwind: '$watchHistory',
+      },
+      {
         $lookup: {
           from: 'videos',
-          localField: 'watchHistory',
+          localField: 'watchHistory.video',
           foreignField: '_id',
-          as: 'watchHistory',
+          as: 'watchHistory.video',
           pipeline: [
             {
               $lookup: {
@@ -449,7 +452,34 @@ export const getWatchHistory = catchAsync(
           ],
         },
       },
+      {
+        $addFields: {
+          'watchHistory.video': {
+            $first: '$watchHistory.video',
+          },
+        },
+      },
+      {
+        $sort: {
+          'watchHistory.watchedAt': -1,
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          watchHistory: {
+            $push: '$watchHistory',
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          watchHistory: 1,
+        },
+      },
     ]);
+
     return res
       .status(200)
       .json(
