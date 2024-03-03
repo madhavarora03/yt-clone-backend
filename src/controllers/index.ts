@@ -52,6 +52,18 @@ import {
   updateVideo,
 } from './video.controller';
 
+import {
+  addVideoToPlaylist,
+  createPlaylist,
+  deletePlaylist,
+  getPlaylistById,
+  getUserPlaylists,
+  removeVideoFromPlaylist,
+  updatePlaylist,
+} from './playlist.controller';
+
+import { getChannelStats, getChannelVideos } from './dashboard.controller';
+
 export {
   changeCurrentPassword,
   getCurrentUser,
@@ -86,3 +98,15 @@ export {
   togglePublishStatus,
   updateVideo,
 };
+
+export {
+  addVideoToPlaylist,
+  createPlaylist,
+  deletePlaylist,
+  getPlaylistById,
+  getUserPlaylists,
+  removeVideoFromPlaylist,
+  updatePlaylist,
+};
+
+export { getChannelStats, getChannelVideos };

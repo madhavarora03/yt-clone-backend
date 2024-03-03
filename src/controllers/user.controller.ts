@@ -439,14 +439,14 @@ export const getWatchHistory = catchAsync(
                       avatar: 1,
                     },
                   },
-                  {
-                    $addFields: {
-                      owner: {
-                        $first: '$owner',
-                      },
-                    },
-                  },
                 ],
+              },
+            },
+            {
+              $addFields: {
+                owner: {
+                  $first: '$owner',
+                },
               },
             },
           ],

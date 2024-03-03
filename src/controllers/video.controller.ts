@@ -37,7 +37,7 @@ export const getVideos = catchAsync(async (req: AuthenticatedRequest, res) => {
             { description: { $regex: query || '', $options: 'i' } },
           ],
           ...(userId && { owner: new mongoose.Types.ObjectId(userId) }),
-          ...(req.user?._id === userId && { isPublished: true }),
+          isPublished: true,
         },
       },
     ]),
@@ -114,7 +114,10 @@ export const getVideoById = catchAsync(
       { new: true },
     );
 
-    console.log(req.user);
+    if (!video) {
+      throw new HttpError(404, 'Video not found!');
+    }
+
     await User.findByIdAndUpdate(
       req.user?._id,
       {
