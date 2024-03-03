@@ -1,5 +1,6 @@
 import { AuthenticatedRequest } from '@/interfaces';
 import { Comment, Video } from '@/models';
+import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import mongoose from 'mongoose';
@@ -10,7 +11,7 @@ export const getVideoComments = catchAsync(async (req, res) => {
   const doesVideoExist = await Video.exists({ _id: videoId });
 
   if (!doesVideoExist) {
-    return res.status(404).json(new HttpResponse(404, {}, 'Video not found!'));
+    throw new HttpError(404, 'Video not found!');
   }
 
   const { page = '1', limit = '10' } = req.query as {
@@ -68,7 +69,7 @@ export const addComment = catchAsync(async (req: AuthenticatedRequest, res) => {
   const doesVideoExist = await Video.exists({ _id: videoId });
 
   if (!doesVideoExist) {
-    return res.status(404).json(new HttpResponse(404, {}, 'Video not found!'));
+    throw new HttpError(404, 'Video not found!');
   }
 
   const comment = await Comment.create({
@@ -90,9 +91,7 @@ export const deleteComment = catchAsync(
     const comment = await Comment.findOne({ _id: commentId, owner: user?._id });
 
     if (!comment) {
-      return res
-        .status(404)
-        .json(new HttpResponse(404, {}, 'Comment not found!'));
+      throw new HttpError(404, 'Comment not found!');
     }
 
     await Comment.deleteOne({ _id: commentId });
@@ -111,9 +110,7 @@ export const updateComment = catchAsync(
     const comment = await Comment.findOne({ _id: commentId, owner: user?._id });
 
     if (!comment) {
-      return res
-        .status(404)
-        .json(new HttpResponse(404, {}, 'Comment not found!'));
+      throw new HttpError(404, 'Comment not found!');  
     }
 
     const updatedComment = await Comment.findOneAndUpdate(

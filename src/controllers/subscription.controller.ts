@@ -1,5 +1,6 @@
 import { AuthenticatedRequest } from '@/interfaces';
-import { Subscription } from '@/models';
+import { Subscription, User } from '@/models';
+import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 
@@ -7,6 +8,13 @@ export const toggleSubscription = catchAsync(
   async (req: AuthenticatedRequest, res) => {
     const { channelId } = req.params;
     const { user } = req;
+
+    const channel = await User.findOne({ _id: channelId });
+
+    if(!channel) {
+      throw new HttpError(404, 'Channel not found!');
+    }
+
     const subscription = await Subscription.findOne({
       subscriber: user?._id,
       channel: channelId,

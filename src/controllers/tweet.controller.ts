@@ -1,5 +1,6 @@
 import { AuthenticatedRequest } from '@/interfaces';
 import { Tweet, User } from '@/models';
+import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 
@@ -16,8 +17,12 @@ export const createTweet = catchAsync(
 
 export const getUserTweets = catchAsync(async (req, res) => {
   const { username } = req.params;
-
   const user = await User.findOne({ username });
+
+  if (!user) {
+    throw new HttpError(404, 'User not found!');
+  }
+
   const tweets = await Tweet.find({ owner: user?._id });
 
   return res
@@ -33,6 +38,10 @@ export const updateTweet = catchAsync(async (req, res) => {
     { $set: { content: newContent } },
     { new: true },
   );
+
+  if (!tweet) {
+    throw new HttpError(404, 'Tweet not found!');
+  }
 
   return res
     .status(200)

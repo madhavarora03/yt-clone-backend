@@ -1,5 +1,6 @@
 import { AuthenticatedRequest } from '@/interfaces';
 import { User, Video } from '@/models';
+import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import { deleteObject, putObjectUrl } from '@/utils/s3';
@@ -64,9 +65,7 @@ export const publishVideo = catchAsync(
     });
 
     if (existingVideo) {
-      return res
-        .status(400)
-        .json(new HttpResponse(400, {}, 'Video already exists!'));
+      throw new HttpError(400, 'Video with this title already exists!');
     }
 
     const video = await Video.create({
@@ -149,6 +148,10 @@ export const updateVideo = catchAsync(async (req, res) => {
     { new: true },
   );
 
+  if (!video) {
+    throw new HttpError(404, 'Video not found!');
+  }
+
   return res
     .status(200)
     .json(new HttpResponse(200, { video }, 'Video updated successfully!'));
@@ -161,9 +164,7 @@ export const deleteVideo = catchAsync(
     const video = await Video.findById({ _id: videoId });
 
     if (!video) {
-      return res
-        .status(404)
-        .json(new HttpResponse(404, {}, 'Video not found!'));
+      throw new HttpError(404, 'Video not found!');
     }
 
     await deleteObject(video.videoFile as string);
@@ -184,7 +185,7 @@ export const togglePublishStatus = catchAsync(async (req, res) => {
   const video = await Video.findById({ _id: videoId });
 
   if (!video) {
-    return res.status(404).json(new HttpResponse(404, {}, 'Video not found!'));
+    throw new HttpError(404, 'Video not found!');
   }
 
   const updatedVideo = await Video.findByIdAndUpdate(
