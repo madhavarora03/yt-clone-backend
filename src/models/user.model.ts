@@ -66,6 +66,10 @@ const userSchema = new Schema<UserDocument, UserModel, UserMethods>(
       type: String,
       required: true,
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     watchHistory: [watchHistorySchema],
     refreshToken: {
       type: String,

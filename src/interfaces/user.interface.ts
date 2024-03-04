@@ -14,6 +14,7 @@ export interface User {
   bio: string;
   password: string;
   watchHistory: WatchHistory[];
+  isAdmin: boolean;
 
   refreshToken?: string;
   createdAt?: Date;
