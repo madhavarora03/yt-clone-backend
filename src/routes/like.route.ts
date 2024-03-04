@@ -4,7 +4,7 @@ import {
   toggleTweetLike,
   toggleVideoLike,
 } from '@/controllers';
-import { verifyJwt } from '@/middlewares';
+import { verifyJwt } from '@/middleware';
 import { Router } from 'express';
 
 const router = Router();
