@@ -11,7 +11,7 @@ export const toggleSubscription = catchAsync(
 
     const channel = await User.findOne({ _id: channelId });
 
-    if(!channel) {
+    if (!channel) {
       throw new HttpError(404, 'Channel not found!');
     }
 
@@ -54,21 +54,19 @@ export const getUserChannelSubscribers = catchAsync(async (req, res) => {
     );
 });
 
-export const getSubscribedChannels = catchAsync(
-  async (req: AuthenticatedRequest, res) => {
-    const { user } = req;
-    const subscriptions = await Subscription.find({
-      subscriber: user?._id,
-    }).populate('channel');
+export const getSubscribedChannels = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const subscriptions = await Subscription.find({
+    subscriber: userId,
+  }).populate('channel');
 
-    return res
-      .status(200)
-      .json(
-        new HttpResponse(
-          200,
-          { subscriptions },
-          'Subscriptions fetched successfully!',
-        ),
-      );
-  },
-);
+  return res
+    .status(200)
+    .json(
+      new HttpResponse(
+        200,
+        { subscriptions },
+        'Subscriptions fetched successfully!',
+      ),
+    );
+});

@@ -9,11 +9,11 @@ import { Router } from 'express';
 
 const router = Router();
 
-// middleware to verify jwt
+router.route('/user/:username').get(getUserTweets);
+
 router.use(verifyJwt);
 
 router.route('/').post(createTweet);
-router.route('/user/:username').get(getUserTweets);
 router.route('/:tweetId').patch(updateTweet).delete(deleteTweet);
 
 export default router;

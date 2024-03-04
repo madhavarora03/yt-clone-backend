@@ -5,7 +5,7 @@ import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
 import { deleteObject, putObjectUrl } from '@/utils/s3';
 import mongoose from 'mongoose';
-export const getVideos = catchAsync(async (req: AuthenticatedRequest, res) => {
+export const getVideos = catchAsync(async (req, res) => {
   const {
     page = '1',
     limit = '10',

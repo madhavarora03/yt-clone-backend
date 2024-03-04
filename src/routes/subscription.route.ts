@@ -1,12 +1,9 @@
-import {
-  getSubscribedChannels,
-  getUserChannelSubscribers,
-  toggleSubscription,
-} from '@/controllers';
+import { getUserChannelSubscribers, toggleSubscription } from '@/controllers';
 import { verifyJwt } from '@/middlewares';
 import { Router } from 'express';
 
 const router = Router();
+
 router.use(verifyJwt);
 
 router
@@ -14,6 +11,6 @@ router
   .get(getUserChannelSubscribers)
   .post(toggleSubscription);
 
-router.route('/u/:userId').get(getSubscribedChannels);
+// router.route('/u/:userId').get(getSubscribedChannels); //admin route
 
 export default router;

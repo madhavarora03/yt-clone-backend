@@ -11,13 +11,14 @@ import { Router } from 'express';
 
 const router = Router();
 
+router.route('/').get(getVideos);
+router.route('/:videoId').get(getVideoById);
+
 router.use(verifyJwt);
 
-router.route('/').get(getVideos).post(publishVideo);
-
+router.route('/').post(publishVideo);
 router
   .route('/:videoId')
-  .get(getVideoById)
   .patch(updateVideo)
   .delete(deleteVideo)
   .post(togglePublishStatus);
