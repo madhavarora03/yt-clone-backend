@@ -34,7 +34,7 @@ export const verifyJwt = catchAsync(
   },
 );
 
-export const isAdmin = catchAsync(
+export const verifyAdmin = catchAsync(
   async (req: AuthenticatedRequest, _, next) => {
     if (!req.user?.isAdmin) {
       throw new HttpError(403, 'Not authorized to access this route');

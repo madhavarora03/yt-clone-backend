@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import adminRoute from './admin.route';
 import commentRoute from './comment.route';
 import dashboardRoute from './dashboard.route';
 import healthCheckRoute from './healthcheck.route';
@@ -20,5 +21,6 @@ router.use('/comment', commentRoute);
 router.use('/video', videoRoute);
 router.use('/playlist', playlistRoute);
 router.use('/dashboard', dashboardRoute);
+router.use('/admin', adminRoute);
 
 export default router;

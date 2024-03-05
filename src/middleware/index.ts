@@ -1,3 +1,3 @@
-import { verifyJwt } from './auth.middleware';
+import { verifyAdmin, verifyJwt } from './auth.middleware';
 
-export { verifyJwt };
+export { verifyAdmin, verifyJwt };

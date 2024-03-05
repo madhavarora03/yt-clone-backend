@@ -1,5 +1,5 @@
 import { AuthenticatedRequest } from '@/interfaces';
-import { User, Video } from '@/models';
+import { Comment, Like, Playlist, User, Video } from '@/models';
 import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
@@ -208,4 +208,45 @@ export const togglePublishStatus = catchAsync(async (req, res) => {
         'Video publish status changed successfully!',
       ),
     );
+});
+
+export const deleteVideoById = catchAsync(async (req, res) => {
+  const { videoId } = req.params;
+
+  const video = await Video.findById({ _id: videoId });
+
+  if (!video) {
+    throw new HttpError(404, 'Video not found!');
+  }
+
+  await deleteObject(video.videoFile as string);
+  await deleteObject(video.thumbnail as string);
+
+  await Like.deleteMany({ video: videoId });
+
+  await User.updateMany(
+    {},
+    {
+      $pull: {
+        watchHistory: { video: videoId },
+      },
+    },
+  );
+
+  await Playlist.updateMany(
+    {},
+    {
+      $pull: {
+        videos: videoId,
+      },
+    },
+  );
+
+  await Comment.deleteMany({ video: videoId });
+
+  await Video.findByIdAndDelete(videoId);
+
+  return res
+    .status(204)
+    .json(new HttpResponse(204, {}, 'Video deleted successfully!'));
 });

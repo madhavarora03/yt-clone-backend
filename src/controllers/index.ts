@@ -1,5 +1,6 @@
 import {
   changeCurrentPassword,
+  deleteUserById,
   getCurrentUser,
   getUploadAvatarUrl,
   getUploadCoverImageUrl,
@@ -19,6 +20,7 @@ import { healthCheck } from './healthcheck.controller';
 import {
   createTweet,
   deleteTweet,
+  deleteTweetById,
   getUserTweets,
   updateTweet,
 } from './tweet.controller';
@@ -39,12 +41,14 @@ import {
 import {
   addComment,
   deleteComment,
+  deleteCommentById,
   getVideoComments,
   updateComment,
 } from './comment.controller';
 
 import {
   deleteVideo,
+  deleteVideoById,
   getVideoById,
   getVideos,
   publishVideo,
@@ -56,6 +60,7 @@ import {
   addVideoToPlaylist,
   createPlaylist,
   deletePlaylist,
+  deletePlaylistById,
   getPlaylistById,
   getUserPlaylists,
   removeVideoFromPlaylist,
@@ -66,6 +71,7 @@ import { getChannelStats, getChannelVideos } from './dashboard.controller';
 
 export {
   changeCurrentPassword,
+  deleteUserById,
   getCurrentUser,
   getUploadAvatarUrl,
   getUploadCoverImageUrl,
@@ -82,16 +88,29 @@ export {
 
 export { healthCheck };
 
-export { createTweet, deleteTweet, getUserTweets, updateTweet };
+export {
+  createTweet,
+  deleteTweet,
+  deleteTweetById,
+  getUserTweets,
+  updateTweet,
+};
 
 export { getLikedVideos, toggleCommentLike, toggleTweetLike, toggleVideoLike };
 
 export { getSubscribedChannels, getUserChannelSubscribers, toggleSubscription };
 
-export { addComment, deleteComment, getVideoComments, updateComment };
+export {
+  addComment,
+  deleteComment,
+  deleteCommentById,
+  getVideoComments,
+  updateComment,
+};
 
 export {
   deleteVideo,
+  deleteVideoById,
   getVideoById,
   getVideos,
   publishVideo,
@@ -103,6 +122,7 @@ export {
   addVideoToPlaylist,
   createPlaylist,
   deletePlaylist,
+  deletePlaylistById,
   getPlaylistById,
   getUserPlaylists,
   removeVideoFromPlaylist,

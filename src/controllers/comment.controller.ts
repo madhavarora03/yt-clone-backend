@@ -1,5 +1,5 @@
 import { AuthenticatedRequest } from '@/interfaces';
-import { Comment, Video } from '@/models';
+import { Comment, Like, Video } from '@/models';
 import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
@@ -110,7 +110,7 @@ export const updateComment = catchAsync(
     const comment = await Comment.findOne({ _id: commentId, owner: user?._id });
 
     if (!comment) {
-      throw new HttpError(404, 'Comment not found!');  
+      throw new HttpError(404, 'Comment not found!');
     }
 
     const updatedComment = await Comment.findOneAndUpdate(
@@ -128,5 +128,25 @@ export const updateComment = catchAsync(
           'Comment updated successfully!',
         ),
       );
+  },
+);
+
+export const deleteCommentById = catchAsync(
+  async (req: AuthenticatedRequest, res) => {
+    const { commentId } = req.params;
+    const { user } = req;
+
+    const comment = await Comment.findOne({ _id: commentId, owner: user?._id });
+
+    if (!comment) {
+      throw new HttpError(404, 'Comment not found!');
+    }
+
+    await Like.deleteMany({ comment: commentId });
+    await Comment.deleteOne({ _id: commentId });
+
+    return res
+      .status(204)
+      .json(new HttpResponse(204, {}, 'Comment deleted successfully!'));
   },
 );

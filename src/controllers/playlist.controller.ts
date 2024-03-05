@@ -167,3 +167,11 @@ export const deletePlaylist = catchAsync(async (req, res) => {
 
   return res.status(204).json(new HttpResponse(204, {}, 'Playlist deleted!'));
 });
+
+export const deletePlaylistById = catchAsync(async (req, res) => {
+  const { playlistId } = req.params;
+
+  await Playlist.findByIdAndDelete(playlistId);
+
+  return res.status(204).json(new HttpResponse(204, {}, 'Playlist deleted!'));
+});

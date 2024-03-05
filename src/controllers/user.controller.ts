@@ -1,7 +1,15 @@
 import { AWS_REGION, REFRESH_TOKEN_SECRET } from '@/config';
 import { AWS_S3_BUCKET_NAME, cookieOptions } from '@/constants';
 import { AuthenticatedRequest } from '@/interfaces';
-import { User } from '@/models';
+import {
+  Comment,
+  Like,
+  Playlist,
+  Subscription,
+  Tweet,
+  User,
+  Video,
+} from '@/models';
 import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
@@ -489,5 +497,34 @@ export const getWatchHistory = catchAsync(
           'Watch history fetched successfully!',
         ),
       );
+  },
+);
+
+export const deleteUserById = catchAsync(
+  async (req: AuthenticatedRequest, res) => {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new HttpError(404, 'User not found');
+    }
+
+    await Like.deleteMany({ owner: userId });
+
+    await Subscription.deleteMany({
+      $or: [{ channel: userId }, { subscriber: userId }],
+    });
+
+    await Video.deleteMany({ owner: userId });
+    await Playlist.deleteMany({ owner: userId });
+    await Tweet.deleteMany({ owner: userId });
+    await Comment.deleteMany({ owner: userId });
+
+    await User.findByIdAndDelete(userId);
+
+    return res
+      .status(204)
+      .json(new HttpResponse(204, {}, 'User deleted successfully'));
   },
 );

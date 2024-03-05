@@ -1,5 +1,5 @@
 import { AuthenticatedRequest } from '@/interfaces';
-import { Tweet, User } from '@/models';
+import { Like, Tweet, User } from '@/models';
 import HttpError from '@/utils/HttpError';
 import HttpResponse from '@/utils/HttpResponse';
 import catchAsync from '@/utils/catchAsync';
@@ -50,6 +50,23 @@ export const updateTweet = catchAsync(async (req, res) => {
 
 export const deleteTweet = catchAsync(async (req, res) => {
   await Tweet.findByIdAndDelete(req.params.tweetId);
+
+  return res
+    .status(204)
+    .json(new HttpResponse(204, {}, 'Tweet deleted successfully'));
+});
+
+export const deleteTweetById = catchAsync(async (req, res) => {
+  const { tweetId } = req.params;
+
+  const tweet = await Tweet.findById(tweetId);
+
+  if (!tweet) {
+    throw new HttpError(404, 'Tweet not found!');
+  }
+
+  await Like.deleteMany({ tweet: tweetId });
+  await Tweet.findById(tweetId);
 
   return res
     .status(204)
