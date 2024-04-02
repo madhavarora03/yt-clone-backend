@@ -1,8 +1,8 @@
-import { ACCESS_TOKEN_SECRET } from '@/config';
-import { AuthenticatedRequest } from '@/interfaces';
-import { User } from '@/models';
-import HttpError from '@/utils/HttpError';
-import catchAsync from '@/utils/catchAsync';
+import { ACCESS_TOKEN_SECRET } from '@config';
+import { AuthenticatedRequest } from '@interfaces';
+import { User } from '@models';
+import HttpError from '@utils/HttpError';
+import catchAsync from '@utils/catchAsync';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export const verifyJwt = catchAsync(

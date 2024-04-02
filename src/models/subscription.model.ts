@@ -1,4 +1,4 @@
-import { SubscriptionDocument, SubscriptionModel } from '@/interfaces';
+import { SubscriptionDocument, SubscriptionModel } from '@interfaces';
 import { Schema, model } from 'mongoose';
 
 const subscriptionSchema = new Schema<SubscriptionDocument>(

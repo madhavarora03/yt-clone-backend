@@ -1,6 +1,6 @@
-import { AWS_REGION, REFRESH_TOKEN_SECRET } from '@/config';
-import { AWS_S3_BUCKET_NAME, cookieOptions } from '@/constants';
-import { AuthenticatedRequest } from '@/interfaces';
+import { AWS_REGION, REFRESH_TOKEN_SECRET } from '@config';
+import { AWS_S3_BUCKET_NAME, cookieOptions } from '@constants';
+import { AuthenticatedRequest } from '@interfaces';
 import {
   Comment,
   Like,
@@ -9,12 +9,12 @@ import {
   Tweet,
   User,
   Video,
-} from '@/models';
-import HttpError from '@/utils/HttpError';
-import HttpResponse from '@/utils/HttpResponse';
-import catchAsync from '@/utils/catchAsync';
-import { generateAccessAndRefreshTokens } from '@/utils/generateTokens';
-import { putObjectUrl } from '@/utils/s3';
+} from '@models';
+import HttpError from '@utils/HttpError';
+import HttpResponse from '@utils/HttpResponse';
+import catchAsync from '@utils/catchAsync';
+import { generateAccessAndRefreshTokens } from '@utils/generateTokens';
+import { putObjectUrl } from '@utils/s3';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
 

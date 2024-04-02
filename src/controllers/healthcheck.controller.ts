@@ -1,5 +1,5 @@
-import catchAsync from '@/utils/catchAsync';
-import HttpResponse from '@/utils/HttpResponse';
+import catchAsync from '@utils/catchAsync';
+import HttpResponse from '@utils/HttpResponse';
 
 export const healthCheck = catchAsync(async (_, res) => {
   res

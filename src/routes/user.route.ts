@@ -12,8 +12,8 @@ import {
   updateAccountDetails,
   validateEmail,
   validateUsername,
-} from '@/controllers';
-import { verifyJwt } from '@/middleware';
+} from '@controllers';
+import { verifyJwt } from '@middleware';
 import { Router } from 'express';
 
 const router = Router();

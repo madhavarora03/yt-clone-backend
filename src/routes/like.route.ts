@@ -3,8 +3,8 @@ import {
   toggleCommentLike,
   toggleTweetLike,
   toggleVideoLike,
-} from '@/controllers';
-import { verifyJwt } from '@/middleware';
+} from '@controllers';
+import { verifyJwt } from '@middleware';
 import { Router } from 'express';
 
 const router = Router();

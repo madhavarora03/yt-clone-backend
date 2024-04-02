@@ -1,8 +1,8 @@
-import { AuthenticatedRequest } from '@/interfaces';
-import { Subscription, User } from '@/models';
-import HttpError from '@/utils/HttpError';
-import HttpResponse from '@/utils/HttpResponse';
-import catchAsync from '@/utils/catchAsync';
+import { AuthenticatedRequest } from '@interfaces';
+import { Subscription, User } from '@models';
+import HttpError from '@utils/HttpError';
+import HttpResponse from '@utils/HttpResponse';
+import catchAsync from '@utils/catchAsync';
 
 export const toggleSubscription = catchAsync(
   async (req: AuthenticatedRequest, res) => {

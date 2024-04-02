@@ -4,8 +4,8 @@ import {
   deleteTweetById,
   deleteUserById,
   deleteVideoById,
-} from '@/controllers';
-import { verifyAdmin, verifyJwt } from '@/middleware';
+} from '@controllers';
+import { verifyAdmin, verifyJwt } from '@middleware';
 import { Router } from 'express';
 
 const router = Router();

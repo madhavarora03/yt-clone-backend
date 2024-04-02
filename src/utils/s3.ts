@@ -1,13 +1,13 @@
-import { AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY } from '@/config';
-import { AWS_S3_BUCKET_NAME } from '@/constants';
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
-  DeleteObjectCommand
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY } from '@config';
+import { AWS_S3_BUCKET_NAME } from '@constants';
 import mime from 'mime-types';
 
 const s3Client = new S3Client({
@@ -55,7 +55,6 @@ export async function listObjects(key: string) {
 
   return res.Contents || [];
 }
-
 
 export async function deleteObject(key: string) {
   const deleteObjCommand = new DeleteObjectCommand({

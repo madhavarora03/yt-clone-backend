@@ -1,4 +1,4 @@
-import { PlaylistDocument, PlaylistMethods, PlaylistModel } from '@/interfaces';
+import { PlaylistDocument, PlaylistMethods, PlaylistModel } from '@interfaces';
 import { Schema, model } from 'mongoose';
 
 const playlistSchema = new Schema<
