@@ -29,7 +29,6 @@ export interface VideoModel extends Model<Video, VideoDocument, VideoMethods> {
   aggregatePaginate<T>(
     query?: Aggregate<T[]>,
     options?: PaginateOptions,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback?: (err: any, result: AggregatePaginateResult<T>) => void,
+    callback?: (err: never, result: AggregatePaginateResult<T>) => void,
   ): Promise<AggregatePaginateResult<T>>;
 }
