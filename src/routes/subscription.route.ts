@@ -2,8 +2,8 @@ import {
   getSubscribedChannels,
   getUserChannelSubscribers,
   toggleSubscription,
-} from '@controllers';
-import { verifyAdmin, verifyJwt } from '@middleware';
+} from '@/controllers';
+import { verifyAdmin, verifyJwt } from '@/middleware';
 import { Router } from 'express';
 
 const router = Router();

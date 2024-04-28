@@ -6,8 +6,8 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY } from '@config';
-import { AWS_S3_BUCKET_NAME } from '@constants';
+import { AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY } from '@/config';
+import { AWS_S3_BUCKET_NAME } from '@/constants';
 import mime from 'mime-types';
 
 const s3Client = new S3Client({

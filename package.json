@@ -7,16 +7,7 @@
     "url": "https://github.com/madhavarora03/yt-clone-backend"
   },
   "_moduleAliases": {
-    "@config": "dist/config",
-    "@controllers": "dist/controllers",
-    "@db": "dist/db",
-    "@interfaces": "dist/interfaces",
-    "@middleware": "dist/middleware",
-    "@models": "dist/models",
-    "@routes": "dist/routes",
-    "@services": "dist/services",
-    "@utils": "dist/utils",
-    "@constants": "dist/constants"
+    "@": "dist"
   },
   "main": "index.js",
   "scripts": {

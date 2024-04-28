@@ -1,4 +1,4 @@
-import { TweetDocument, TweetMethods, TweetModel } from '@interfaces';
+import { TweetDocument, TweetMethods, TweetModel } from '@/interfaces';
 import { Schema, model } from 'mongoose';
 
 const tweetSchema = new Schema<TweetDocument, TweetModel, TweetMethods>(

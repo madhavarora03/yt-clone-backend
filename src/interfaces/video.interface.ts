@@ -1,4 +1,11 @@
-import { Aggregate, AggregatePaginateResult, Document, Model, PaginateOptions, Schema } from 'mongoose';
+import {
+  Aggregate,
+  AggregatePaginateResult,
+  Document,
+  Model,
+  PaginateOptions,
+  Schema,
+} from 'mongoose';
 
 export interface Video {
   videoFile: string;

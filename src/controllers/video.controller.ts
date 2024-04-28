@@ -1,9 +1,9 @@
-import { AuthenticatedRequest } from '@interfaces';
-import { Comment, Like, Playlist, User, Video } from '@models';
-import HttpError from '@utils/HttpError';
-import HttpResponse from '@utils/HttpResponse';
-import catchAsync from '@utils/catchAsync';
-import { deleteObject, putObjectUrl } from '@utils/s3';
+import { AuthenticatedRequest } from '@/interfaces';
+import { Comment, Like, Playlist, User, Video } from '@/models';
+import HttpError from '@/utils/HttpError';
+import HttpResponse from '@/utils/HttpResponse';
+import catchAsync from '@/utils/catchAsync';
+import { deleteObject, putObjectUrl } from '@/utils/s3';
 import mongoose from 'mongoose';
 export const getVideos = catchAsync(async (req, res) => {
   const {

@@ -1,8 +1,8 @@
 import 'module-alias/register';
 
-import { ADDRESS, NODE_ENV, PORT } from '@config';
-import connect from '@db';
-import logger from '@utils/logger';
+import { ADDRESS, NODE_ENV, PORT } from '@/config';
+import connect from '@/db';
+import logger from '@/utils/logger';
 import { Server, createServer } from 'http';
 import app from './app';
 

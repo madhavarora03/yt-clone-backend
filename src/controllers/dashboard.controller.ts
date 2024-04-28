@@ -1,7 +1,7 @@
-import { AuthenticatedRequest } from '@interfaces';
-import { Like, Subscription, Video } from '@models';
-import HttpResponse from '@utils/HttpResponse';
-import catchAsync from '@utils/catchAsync';
+import { AuthenticatedRequest } from '@/interfaces';
+import { Like, Subscription, Video } from '@/models';
+import HttpResponse from '@/utils/HttpResponse';
+import catchAsync from '@/utils/catchAsync';
 import mongoose from 'mongoose';
 
 export const getChannelStats = catchAsync(

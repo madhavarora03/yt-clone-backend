@@ -1,8 +1,8 @@
-import { AuthenticatedRequest } from '@interfaces';
-import { Like, Tweet, User } from '@models';
-import HttpError from '@utils/HttpError';
-import HttpResponse from '@utils/HttpResponse';
-import catchAsync from '@utils/catchAsync';
+import { AuthenticatedRequest } from '@/interfaces';
+import { Like, Tweet, User } from '@/models';
+import HttpError from '@/utils/HttpError';
+import HttpResponse from '@/utils/HttpResponse';
+import catchAsync from '@/utils/catchAsync';
 
 export const createTweet = catchAsync(
   async (req: AuthenticatedRequest, res) => {

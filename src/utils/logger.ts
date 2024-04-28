@@ -1,4 +1,4 @@
-import { NODE_ENV } from '@config';
+import { NODE_ENV } from '@/config';
 import winston from 'winston';
 
 const enumerateErrorFormat = winston.format((info) => {

@@ -1,5 +1,5 @@
-import { getChannelStats, getChannelVideos } from '@controllers';
-import { verifyJwt } from '@middleware';
+import { getChannelStats, getChannelVideos } from '@/controllers';
+import { verifyJwt } from '@/middleware';
 import { Router } from 'express';
 
 const router = Router();

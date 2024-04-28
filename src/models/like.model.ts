@@ -1,4 +1,4 @@
-import { LikeDocument, LikeMethods, LikeModel } from '@interfaces';
+import { LikeDocument, LikeMethods, LikeModel } from '@/interfaces';
 import { Schema, model } from 'mongoose';
 
 const likeSchema = new Schema<LikeDocument, LikeModel, LikeMethods>(

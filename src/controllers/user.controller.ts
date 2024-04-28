@@ -1,6 +1,6 @@
-import { AWS_REGION, REFRESH_TOKEN_SECRET } from '@config';
-import { AWS_S3_BUCKET_NAME, cookieOptions } from '@constants';
-import { AuthenticatedRequest } from '@interfaces';
+import { AWS_REGION, REFRESH_TOKEN_SECRET } from '@/config';
+import { AWS_S3_BUCKET_NAME, cookieOptions } from '@/constants';
+import { AuthenticatedRequest } from '@/interfaces';
 import {
   Comment,
   Like,
@@ -9,18 +9,18 @@ import {
   Tweet,
   User,
   Video,
-} from '@models';
-import HttpError from '@utils/HttpError';
-import HttpResponse from '@utils/HttpResponse';
-import catchAsync from '@utils/catchAsync';
-import { generateAccessAndRefreshTokens } from '@utils/generateTokens';
-import { putObjectUrl } from '@utils/s3';
+} from '@/models';
+import HttpError from '@/utils/HttpError';
+import HttpResponse from '@/utils/HttpResponse';
+import catchAsync from '@/utils/catchAsync';
+import { generateAccessAndRefreshTokens } from '@/utils/generateTokens';
+import { putObjectUrl } from '@/utils/s3';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 /**
  * Validate Username.
- * @route POST /validate-username
+ * @/route POST /validate-username
  */
 
 export const validateUsername = catchAsync(async (req, res) => {
@@ -39,7 +39,7 @@ export const validateUsername = catchAsync(async (req, res) => {
 
 /**
  * Validate Email.
- * @route POST /validate-email
+ * @/route POST /validate-email
  */
 
 export const validateEmail = catchAsync(async (req, res) => {
@@ -58,7 +58,7 @@ export const validateEmail = catchAsync(async (req, res) => {
 
 /**
  * Register new user.
- * @route POST /register
+ * @/route POST /register
  */
 
 export const registerUser = catchAsync(async (req, res) => {
@@ -114,7 +114,7 @@ export const registerUser = catchAsync(async (req, res) => {
 
 /**
  * Login user.
- * @route POST /login
+ * @/route POST /login
  */
 
 export const loginUser = catchAsync(async (req, res) => {
@@ -159,7 +159,7 @@ export const loginUser = catchAsync(async (req, res) => {
 
 /**
  * Refresh access token.
- * @route POST /refresh-token
+ * @/route POST /refresh-token
  */
 
 export const refreshAccessToken = catchAsync(async (req, res) => {
@@ -206,8 +206,8 @@ export const refreshAccessToken = catchAsync(async (req, res) => {
 
 /**
  * Logout user.
- * @route POST /logout
- * @access Private
+ * @/route POST /logout
+ * @/access Private
  */
 
 export const logoutUser = catchAsync(async (req: AuthenticatedRequest, res) => {
@@ -238,8 +238,8 @@ export const getCurrentUser = catchAsync(
 
 /**
  * Update account details.
- * @route PATCH /update-details
- * @access Private
+ * @/route PATCH /update-details
+ * @/access Private
  */
 
 export const updateAccountDetails = catchAsync(

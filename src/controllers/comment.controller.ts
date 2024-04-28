@@ -1,8 +1,8 @@
-import { AuthenticatedRequest } from '@interfaces';
-import { Comment, Like, Video } from '@models';
-import HttpError from '@utils/HttpError';
-import HttpResponse from '@utils/HttpResponse';
-import catchAsync from '@utils/catchAsync';
+import { AuthenticatedRequest } from '@/interfaces';
+import { Comment, Like, Video } from '@/models';
+import HttpError from '@/utils/HttpError';
+import HttpResponse from '@/utils/HttpResponse';
+import catchAsync from '@/utils/catchAsync';
 import mongoose from 'mongoose';
 
 export const getVideoComments = catchAsync(async (req, res) => {

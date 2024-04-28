@@ -1,7 +1,7 @@
-import { MONGODB_URI, NODE_ENV } from '@config';
-import { DB_NAME } from '@constants';
-import HttpError from '@utils/HttpError';
-import logger from '@utils/logger';
+import { MONGODB_URI, NODE_ENV } from '@/config';
+import { DB_NAME } from '@/constants';
+import HttpError from '@/utils/HttpError';
+import logger from '@/utils/logger';
 import mongoose from 'mongoose';
 
 async function connect() {

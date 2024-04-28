@@ -3,13 +3,13 @@ import {
   ACCESS_TOKEN_SECRET,
   REFRESH_TOKEN_EXPIRY,
   REFRESH_TOKEN_SECRET,
-} from '@config';
+} from '@/config';
 import {
   UserDocument,
   UserMethods,
   UserModel,
   WatchHistory,
-} from '@interfaces';
+} from '@/interfaces';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Schema, model } from 'mongoose';

@@ -1,8 +1,8 @@
-import { AuthenticatedRequest } from '@interfaces';
-import { Comment, Like, Tweet, Video } from '@models';
-import HttpError from '@utils/HttpError';
-import HttpResponse from '@utils/HttpResponse';
-import catchAsync from '@utils/catchAsync';
+import { AuthenticatedRequest } from '@/interfaces';
+import { Comment, Like, Tweet, Video } from '@/models';
+import HttpError from '@/utils/HttpError';
+import HttpResponse from '@/utils/HttpResponse';
+import catchAsync from '@/utils/catchAsync';
 import { Response } from 'express';
 
 async function toggleLike(
